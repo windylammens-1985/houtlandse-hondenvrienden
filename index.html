@@ -1,0 +1,2040 @@
+```html
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Houtlandse Hondenvrienden - Administratie</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f8f4;
+      color: #28372f;
+      min-height: 100vh;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #2f8050, #65a957);
+      color: white;
+      padding: 32px 20px 70px;
+    }
+
+    header::before {
+      content: "🐾";
+      position: absolute;
+      right: 7%;
+      top: 5px;
+      font-size: 110px;
+      opacity: 0.10;
+      transform: rotate(-15deg);
+    }
+
+    header::after {
+      content: "🐾  🐾  🐾";
+      position: absolute;
+      left: 3%;
+      bottom: 10px;
+      font-size: 34px;
+      opacity: 0.10;
+      transform: rotate(-8deg);
+      letter-spacing: 15px;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand-icon {
+      width: 70px;
+      height: 70px;
+      background: white;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 39px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -0.7px;
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      font-size: 15px;
+      opacity: 0.9;
+    }
+
+    /* =========================
+       WELKOMSTKAART
+    ========================= */
+
+    .welcome-wrap {
+      max-width: 1200px;
+      margin: -42px auto 0;
+      padding: 0 20px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .welcome {
+      background: white;
+      border-radius: 22px;
+      padding: 25px 28px;
+      box-shadow: 0 8px 28px rgba(37, 70, 48, 0.13);
+      border: 1px solid #e3ebe4;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .welcome-text h2 {
+      margin: 0;
+      color: #285f3b;
+      font-size: 23px;
+    }
+
+    .welcome-text p {
+      margin: 7px 0 0;
+      color: #738078;
+      font-size: 14px;
+    }
+
+    .welcome-dogs {
+      font-size: 48px;
+      white-space: nowrap;
+    }
+
+    /* =========================
+       CONTAINER
+    ========================= */
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 25px 20px 45px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 13px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 19px;
+      color: #294536;
+    }
+
+    .section-title span {
+      color: #87938c;
+      font-size: 12px;
+    }
+
+    /* =========================
+       STATISTIEKEN
+    ========================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 27px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 17px;
+      padding: 18px;
+      border: 1px solid #e3ebe4;
+      box-shadow: 0 4px 15px rgba(39, 70, 50, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      transition: 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(39, 70, 50, 0.10);
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      flex-shrink: 0;
+    }
+
+    .icon-green {
+      background: #e0f2e5;
+    }
+
+    .icon-yellow {
+      background: #fff3cd;
+    }
+
+    .icon-blue {
+      background: #e2eff9;
+    }
+
+    .icon-pink {
+      background: #f9e5ec;
+    }
+
+    .stat-number {
+      font-size: 25px;
+      font-weight: bold;
+      color: #285d3b;
+    }
+
+    .stat-label {
+      margin-top: 3px;
+      color: #7c8982;
+      font-size: 12px;
+    }
+
+    /* =========================
+       SNEL MENU
+    ========================= */
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 27px;
+    }
+
+    .menu-card {
+      position: relative;
+      overflow: hidden;
+      background: white;
+      border-radius: 19px;
+      padding: 20px;
+      border: 1px solid #e3ebe4;
+      box-shadow: 0 4px 15px rgba(39, 70, 50, 0.06);
+      text-decoration: none;
+      color: inherit;
+      min-height: 135px;
+      transition: 0.2s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 9px 23px rgba(39, 70, 50, 0.12);
+    }
+
+    .menu-card::after {
+      content: "";
+      position: absolute;
+      right: -20px;
+      bottom: -28px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+
+    .menu-green::after {
+      background: #dff2e4;
+    }
+
+    .menu-yellow::after {
+      background: #fff0c3;
+    }
+
+    .menu-blue::after {
+      background: #deedf8;
+    }
+
+    .menu-pink::after {
+      background: #f7e1e9;
+    }
+
+    .menu-purple::after {
+      background: #ebe1f5;
+    }
+
+    .menu-orange::after {
+      background: #fae6cf;
+    }
+
+    .menu-icon {
+      width: 49px;
+      height: 49px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      margin-bottom: 13px;
+    }
+
+    .menu-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #294636;
+    }
+
+    .menu-description {
+      margin-top: 4px;
+      color: #7d8982;
+      font-size: 12px;
+      line-height: 1.4;
+      max-width: 240px;
+    }
+
+    .menu-arrow {
+      position: absolute;
+      right: 17px;
+      top: 18px;
+      color: #9aa69f;
+      font-size: 18px;
+    }
+
+    .green {
+      background: #e0f2e5;
+    }
+
+    .yellow {
+      background: #fff2ca;
+    }
+
+    .blue {
+      background: #e1eef8;
+    }
+
+    .pink {
+      background: #f8e5ec;
+    }
+
+    .purple {
+      background: #ebe3f5;
+    }
+
+    .orange {
+      background: #fae8d4;
+    }
+
+    /* =========================
+       INFO GRID
+    ========================= */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .info-card {
+      background: white;
+      border: 1px solid #e3ebe4;
+      border-radius: 19px;
+      box-shadow: 0 4px 15px rgba(39, 70, 50, 0.06);
+      overflow: hidden;
+    }
+
+    .info-header {
+      padding: 17px 19px;
+      border-bottom: 1px solid #edf1ee;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-header-icon {
+      width: 37px;
+      height: 37px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      background: #e8f2eb;
+    }
+
+    .info-header h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #294636;
+    }
+
+    .info-content {
+      padding: 18px 19px;
+    }
+
+    .info-main {
+      font-size: 17px;
+      font-weight: bold;
+      color: #285d3b;
+    }
+
+    .info-sub {
+      margin-top: 6px;
+      color: #7b8780;
+      font-size: 13px;
+    }
+
+    .info-empty {
+      color: #8b9790;
+      font-size: 13px;
+    }
+
+    .info-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: #2d7047;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .info-link:hover {
+      text-decoration: underline;
+    }
+
+    /* =========================
+       BACKUP
+    ========================= */
+
+    .backup {
+      background: linear-gradient(135deg, #fff9e8, #fffdf7);
+      border: 1px solid #f0e3bd;
+      border-radius: 19px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .backup-info {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .backup-icon {
+      width: 47px;
+      height: 47px;
+      border-radius: 14px;
+      background: #ffefbd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      flex-shrink: 0;
+    }
+
+    .backup-title {
+      font-weight: bold;
+      color: #66511e;
+      font-size: 15px;
+    }
+
+    .backup-text {
+      margin-top: 4px;
+      color: #8a7b55;
+      font-size: 12px;
+    }
+
+    .backup-buttons {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: #2d7047;
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: #245c3a;
+    }
+
+    .button-secondary {
+      background: white;
+      color: #66511e;
+      border: 1px solid #e2d4a9;
+    }
+
+    .button-secondary:hover {
+      background: #fffaf0;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #9aa49e;
+      font-size: 11px;
+    }
+
+    /* =========================
+       MELDING
+    ========================= */
+
+    .melding {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #285d3b;
+      color: white;
+      padding: 13px 17px;
+      border-radius: 11px;
+      box-shadow: 0 7px 25px rgba(0,0,0,0.18);
+      font-size: 13px;
+      display: none;
+      z-index: 1000;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 900px) {
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      header {
+        padding: 24px 15px 62px;
+      }
+
+      .brand {
+        gap: 12px;
+      }
+
+      .brand-icon {
+        width: 57px;
+        height: 57px;
+        border-radius: 18px;
+        font-size: 31px;
+      }
+
+      .brand h1 {
+        font-size: 22px;
+      }
+
+      .brand p {
+        font-size: 13px;
+      }
+
+      .welcome-wrap {
+        padding: 0 12px;
+        margin-top: -35px;
+      }
+
+      .welcome {
+        padding: 19px;
+      }
+
+      .welcome-text h2 {
+        font-size: 19px;
+      }
+
+      .welcome-text p {
+        font-size: 12px;
+      }
+
+      .welcome-dogs {
+        font-size: 35px;
+      }
+
+      .container {
+        padding: 20px 12px 35px;
+      }
+
+      .stats {
+        gap: 9px;
+      }
+
+      .stat-card {
+        padding: 13px;
+        gap: 9px;
+      }
+
+      .stat-icon {
+        width: 39px;
+        height: 39px;
+        font-size: 18px;
+      }
+
+      .stat-number {
+        font-size: 20px;
+      }
+
+      .stat-label {
+        font-size: 11px;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .menu-card {
+        min-height: 130px;
+        padding: 15px;
+      }
+
+      .menu-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 21px;
+        margin-bottom: 10px;
+      }
+
+      .menu-title {
+        font-size: 14px;
+      }
+
+      .menu-description {
+        font-size: 11px;
+      }
+
+      .backup {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .backup-buttons {
+        width: 100%;
+      }
+
+      .backup-buttons .button {
+        flex: 1;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header>
+
+    <div class="header-inner">
+
+      <div class="brand">
+
+        <div class="brand-icon">
+          🐕
+        </div>
+
+        <div>
+          <h1>Houtlandse Hondenvrienden</h1>
+          <p>Administratie · Samen actief met onze honden 🐾</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       WELKOM
+  ========================= -->
+
+  <div class="welcome-wrap">
+
+    <div class="welcome">
+
+      <div class="welcome-text">
+
+        <h2>Welkom bij de Hondenvrienden! 🐾</h2>
+
+        <p>
+          Alles voor de leden, honden, trainingen en activiteiten op één plek.
+        </p>
+
+      </div>
+
+      <div class="welcome-dogs">
+        🐶 🐕 🦮
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <main class="container">
+
+    <!-- =========================
+         STATISTIEKEN
+    ========================= -->
+
+    <div class="section-title">
+
+      <h2>📊 Ons overzicht</h2>
+
+      <span>Actuele gegevens</span>
+
+    </div>
+
+
+    <section class="stats">
+
+      <div class="stat-card">
+
+        <div class="stat-icon icon-green">
+          👥
+        </div>
+
+        <div>
+          <div
+            class="stat-number"
+            id="totaalLeden"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Leden
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon icon-yellow">
+          🐕
+        </div>
+
+        <div>
+          <div
+            class="stat-number"
+            id="totaalHonden"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Honden
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon icon-blue">
+          🏃
+        </div>
+
+        <div>
+          <div
+            class="stat-number"
+            id="totaalTrainingen"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            Trainingsdagen
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon icon-pink">
+          💚
+        </div>
+
+        <div>
+          <div
+            class="stat-number"
+            id="gemiddeldeAanwezigheid"
+          >
+            0%
+          </div>
+
+          <div class="stat-label">
+            Gem. aanwezigheid
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         MENU
+    ========================= -->
+
+    <div class="section-title">
+
+      <h2>🐾 Snel naar</h2>
+
+      <span>Kies een onderdeel</span>
+
+    </div>
+
+
+    <section class="menu-grid">
+
+
+      <a
+        href="leden.html"
+        class="menu-card menu-green"
+      >
+
+        <div class="menu-arrow">›</div>
+
+        <div class="menu-icon green">
+          👥
+        </div>
+
+        <div class="menu-title">
+          Leden & honden
+        </div>
+
+        <div class="menu-description">
+          Beheer leden, honden en hun gegevens.
+        </div>
+
+      </a>
+
+
+      <a
+        href="kalender.html"
+        class="menu-card menu-blue"
+      >
+
+        <div class="menu-arrow">›</div>
+
+        <div class="menu-icon blue">
+          📅
+        </div>
+
+        <div class="menu-title">
+          Kalender
+        </div>
+
+        <div class="menu-description">
+          Bekijk trainingen, activiteiten en wedstrijden.
+        </div>
+
+      </a>
+
+
+      <a
+        href="aanwezigheden.html"
+        class="menu-card menu-yellow"
+      >
+
+        <div class="menu-arrow">›</div>
+
+        <div class="menu-icon yellow">
+          ✅
+        </div>
+
+        <div class="menu-title">
+          Aanwezigheden
+        </div>
+
+        <div class="menu-description">
+          Registreer wie aanwezig is op training.
+        </div>
+
+      </a>
+
+
+      <a
+        href="verjaardagen.html"
+        class="menu-card menu-pink"
+      >
+
+        <div class="menu-arrow">›</div>
+
+        <div class="menu-icon pink">
+          🎂
+        </div>
+
+        <div class="menu-title">
+          Verjaardagen
+        </div>
+
+        <div class="menu-description">
+          Ontdek welke honden binnenkort jarig zijn.
+        </div>
+
+      </a>
+
+
+      <a
+        href="statistieken.html"
+        class="menu-card menu-purple"
+      >
+
+        <div class="menu-arrow">›</div>
+
+        <div class="menu-icon purple">
+          📈
+        </div>
+
+        <div class="menu-title">
+          Statistieken
+        </div>
+
+        <div class="menu-description">
+          Bekijk aanwezigheid en clubcijfers.
+        </div>
+
+      </a>
+
+
+      <a
+        href="kalender.html"
+        class="menu-card menu-orange"
+      >
+
+        <div class="menu-arrow">›</div>
+
+        <div class="menu-icon orange">
+          🎉
+        </div>
+
+        <div class="menu-title">
+          Activiteiten
+        </div>
+
+        <div class="menu-description">
+          Plan en beheer activiteiten voor de club.
+        </div>
+
+      </a>
+
+    </section>
+
+
+    <!-- =========================
+         INFO
+    ========================= -->
+
+    <section class="info-grid">
+
+
+      <!-- VOLGENDE VERJAARDAG -->
+
+      <div class="info-card">
+
+        <div class="info-header">
+
+          <div class="info-header-icon">
+            🎂
+          </div>
+
+          <h3>
+            Volgende hondenverjaardag
+          </h3>
+
+        </div>
+
+        <div
+          class="info-content"
+          id="volgendeVerjaardag"
+        >
+          <div class="info-empty">
+            Gegevens laden...
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- LAATSTE TRAINING -->
+
+      <div class="info-card">
+
+        <div class="info-header">
+
+          <div class="info-header-icon">
+            🐕
+          </div>
+
+          <h3>
+            Laatste training
+          </h3>
+
+        </div>
+
+        <div
+          class="info-content"
+          id="laatsteTraining"
+        >
+          <div class="info-empty">
+            Gegevens laden...
+          </div>
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+    <!-- =========================
+         BACKUP
+    ========================= -->
+
+    <div class="section-title">
+
+      <h2>💾 Gegevens</h2>
+
+    </div>
+
+
+    <section class="backup">
+
+      <div class="backup-info">
+
+        <div class="backup-icon">
+          💾
+        </div>
+
+        <div>
+
+          <div class="backup-title">
+            Back-up van de administratie
+          </div>
+
+          <div class="backup-text">
+            Bewaar je gegevens veilig of zet een eerdere back-up terug.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="backup-buttons">
+
+        <button
+          class="button button-primary"
+          onclick="maakBackup()"
+        >
+          ⬇️ Back-up maken
+        </button>
+
+        <button
+          class="button button-secondary"
+          onclick="document.getElementById('backupBestand').click()"
+        >
+          ⬆️ Back-up terugzetten
+        </button>
+
+        <input
+          type="file"
+          id="backupBestand"
+          accept=".json,application/json"
+          style="display:none"
+          onchange="zetBackupTerug(event)"
+        >
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    🐾 Houtlandse Hondenvrienden · Administratie
+  </footer>
+
+
+  <div
+    class="melding"
+    id="melding"
+  ></div>
+
+
+  <script>
+
+    /* =========================
+       START
+    ========================= */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        laadDashboard();
+
+      }
+    );
+
+
+    /* =========================
+       DASHBOARD
+    ========================= */
+
+    function laadDashboard() {
+
+      let leden = [];
+      let aanwezigheden = {};
+      let kalender = [];
+
+      try {
+
+        leden =
+          JSON.parse(
+            localStorage.getItem("leden")
+          ) || [];
+
+      } catch (fout) {
+
+        leden = [];
+
+      }
+
+
+      try {
+
+        aanwezigheden =
+          JSON.parse(
+            localStorage.getItem("aanwezigheden")
+          ) || {};
+
+      } catch (fout) {
+
+        aanwezigheden = {};
+
+      }
+
+
+      try {
+
+        kalender =
+          JSON.parse(
+            localStorage.getItem("kalender")
+          ) || [];
+
+      } catch (fout) {
+
+        kalender = [];
+
+      }
+
+
+      if (!Array.isArray(leden)) {
+        leden = [];
+      }
+
+      if (!Array.isArray(kalender)) {
+        kalender = [];
+      }
+
+
+      /* Leden */
+
+      document.getElementById("totaalLeden")
+        .textContent = leden.length;
+
+
+      /* Honden */
+
+      const honden =
+        leden.filter(function(lid) {
+
+          return (
+            lid.naamHond &&
+            String(lid.naamHond).trim() !== ""
+          );
+
+        }).length;
+
+      document.getElementById("totaalHonden")
+        .textContent = honden;
+
+
+      /* Trainingen */
+
+      const trainingsdagen =
+        Object.keys(aanwezigheden);
+
+      document.getElementById("totaalTrainingen")
+        .textContent = trainingsdagen.length;
+
+
+      /* Aanwezigheid */
+
+      let aanwezig = 0;
+      let afwezig = 0;
+
+      Object.keys(aanwezigheden)
+        .forEach(function(datum) {
+
+          const dag =
+            aanwezigheden[datum];
+
+          if (!dag || typeof dag !== "object") {
+            return;
+          }
+
+          Object.keys(dag)
+            .forEach(function(memberId) {
+
+              const gegevens =
+                dag[memberId];
+
+              if (!gegevens) {
+                return;
+              }
+
+              if (gegevens.status === "aanwezig") {
+                aanwezig++;
+              }
+
+              if (gegevens.status === "afwezig") {
+                afwezig++;
+              }
+
+            });
+
+        });
+
+
+      const geregistreerd =
+        aanwezig + afwezig;
+
+      const percentage =
+        geregistreerd > 0
+          ? Math.round(
+              (aanwezig / geregistreerd) * 100
+            )
+          : 0;
+
+      document.getElementById(
+        "gemiddeldeAanwezigheid"
+      ).textContent = percentage + "%";
+
+
+      toonVolgendeVerjaardag(leden);
+
+      toonLaatsteTraining(aanwezigheden, kalender);
+
+    }
+
+
+    /* =========================
+       VOLGENDE VERJAARDAG
+    ========================= */
+
+    function toonVolgendeVerjaardag(leden) {
+
+      const element =
+        document.getElementById(
+          "volgendeVerjaardag"
+        );
+
+
+      const honden =
+        leden.filter(function(lid) {
+
+          return (
+            lid.geboorteHond &&
+            lid.naamHond
+          );
+
+        });
+
+
+      if (honden.length === 0) {
+
+        element.innerHTML =
+          '<div class="info-empty">' +
+            'Nog geen geboortedata van honden ingevoerd.' +
+          '</div>' +
+
+          '<a class="info-link" href="leden.html">' +
+            'Leden bekijken →' +
+          '</a>';
+
+        return;
+
+      }
+
+
+      const vandaag = new Date();
+
+      vandaag.setHours(0, 0, 0, 0);
+
+
+      let volgende = null;
+      let kleinsteVerschil = Infinity;
+
+
+      honden.forEach(function(lid) {
+
+        const geboorte =
+          parseGeboorteDatum(lid.geboorteHond);
+
+        if (!geboorte) {
+          return;
+        }
+
+
+        let verjaardag =
+          new Date(
+            vandaag.getFullYear(),
+            geboorte.getMonth(),
+            geboorte.getDate()
+          );
+
+        verjaardag.setHours(0, 0, 0, 0);
+
+
+        if (verjaardag < vandaag) {
+
+          verjaardag =
+            new Date(
+              vandaag.getFullYear() + 1,
+              geboorte.getMonth(),
+              geboorte.getDate()
+            );
+
+        }
+
+
+        const verschil =
+          verjaardag - vandaag;
+
+
+        if (verschil < kleinsteVerschil) {
+
+          kleinsteVerschil = verschil;
+
+          volgende = {
+            lid: lid,
+            datum: verjaardag
+          };
+
+        }
+
+      });
+
+
+      if (!volgende) {
+
+        element.innerHTML =
+          '<div class="info-empty">' +
+            'Geen geldige verjaardagen gevonden.' +
+          '</div>';
+
+        return;
+
+      }
+
+
+      const naam =
+        escapeHtml(
+          volgende.lid.naamHond
+        );
+
+
+      const datum =
+        volgende.datum.toLocaleDateString(
+          "nl-BE",
+          {
+            day: "numeric",
+            month: "long"
+          }
+        );
+
+
+      const leeftijd =
+        berekenLeeftijdOpDatum(
+          parseGeboorteDatum(
+            volgende.lid.geboorteHond
+          ),
+          volgende.datum
+        );
+
+
+      element.innerHTML =
+
+        '<div class="info-main">' +
+          '🎈 ' + naam +
+        '</div>' +
+
+        '<div class="info-sub">' +
+          'is jarig op ' +
+          escapeHtml(datum) +
+          ' · wordt ' +
+          leeftijd +
+          ' jaar' +
+        '</div>' +
+
+        '<a class="info-link" href="verjaardagen.html">' +
+          'Alle verjaardagen bekijken →' +
+        '</a>';
+
+    }
+
+
+    /* =========================
+       LAATSTE TRAINING
+    ========================= */
+
+    function toonLaatsteTraining(
+      aanwezigheden,
+      kalender
+    ) {
+
+      const element =
+        document.getElementById(
+          "laatsteTraining"
+        );
+
+
+      const datums =
+        Object.keys(aanwezigheden)
+          .filter(function(datum) {
+
+            return /^\d{4}-\d{2}-\d{2}$/.test(
+              datum
+            );
+
+          })
+          .sort()
+          .reverse();
+
+
+      let laatsteDatum =
+        datums.length > 0
+          ? datums[0]
+          : null;
+
+
+      /*
+        Kijk ook naar de kalender.
+        Hierdoor kan de laatste training
+        zichtbaar zijn wanneer er nog geen
+        aanwezigheden zijn geregistreerd.
+      */
+
+      const kalenderTrainingen =
+        kalender
+          .filter(function(item) {
+
+            return (
+              item.type === "training" &&
+              item.datum
+            );
+
+          })
+          .sort(function(a, b) {
+
+            return b.datum.localeCompare(
+              a.datum
+            );
+
+          });
+
+
+      if (
+        kalenderTrainingen.length > 0 &&
+        (
+          !laatsteDatum ||
+          kalenderTrainingen[0].datum > laatsteDatum
+        )
+      ) {
+
+        laatsteDatum =
+          kalenderTrainingen[0].datum;
+
+      }
+
+
+      if (!laatsteDatum) {
+
+        element.innerHTML =
+          '<div class="info-empty">' +
+            'Er zijn nog geen trainingen geregistreerd.' +
+          '</div>' +
+
+          '<a class="info-link" href="kalender.html">' +
+            'Naar de kalender →' +
+          '</a>';
+
+        return;
+
+      }
+
+
+      const training =
+        kalenderTrainingen.find(function(item) {
+
+          return item.datum === laatsteDatum;
+
+        });
+
+
+      let titel =
+        "Training";
+
+
+      if (training && training.titel) {
+
+        titel =
+          escapeHtml(training.titel);
+
+      }
+
+
+      element.innerHTML =
+
+        '<div class="info-main">' +
+          '🐕 ' + titel +
+        '</div>' +
+
+        '<div class="info-sub">' +
+          '📅 ' +
+          escapeHtml(
+            formatteerDatum(laatsteDatum)
+          ) +
+
+          (
+            training && training.tijd
+              ? ' · 🕒 ' +
+                escapeHtml(training.tijd)
+              : ''
+          ) +
+
+          (
+            training && training.locatie
+              ? ' · 📍 ' +
+                escapeHtml(training.locatie)
+              : ''
+          ) +
+
+        '</div>' +
+
+        '<a class="info-link" href="aanwezigheden.html?datum=' +
+          encodeURIComponent(laatsteDatum) +
+          '">' +
+          'Aanwezigheden bekijken →' +
+        '</a>';
+
+    }
+
+
+    /* =========================
+       GEBOORTEDATUM
+    ========================= */
+
+    function parseGeboorteDatum(waarde) {
+
+      if (!waarde) {
+        return null;
+      }
+
+
+      /*
+        Ondersteunt:
+        YYYY-MM-DD
+        DD-MM-YYYY
+        DD/MM/YYYY
+      */
+
+      const tekst =
+        String(waarde).trim();
+
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(tekst)) {
+
+        const delen =
+          tekst.split("-");
+
+        return new Date(
+          Number(delen[0]),
+          Number(delen[1]) - 1,
+          Number(delen[2])
+        );
+
+      }
+
+
+      if (/^\d{2}[-/]\d{2}[-/]\d{4}$/.test(tekst)) {
+
+        const delen =
+          tekst.split(/[-/]/);
+
+        return new Date(
+          Number(delen[2]),
+          Number(delen[1]) - 1,
+          Number(delen[0])
+        );
+
+      }
+
+
+      const datum =
+        new Date(tekst);
+
+
+      return isNaN(datum.getTime())
+        ? null
+        : datum;
+
+    }
+
+
+    /* =========================
+       LEEFTIJD
+    ========================= */
+
+    function berekenLeeftijdOpDatum(
+      geboorte,
+      datum
+    ) {
+
+      if (!geboorte || !datum) {
+        return 0;
+      }
+
+
+      let leeftijd =
+        datum.getFullYear() -
+        geboorte.getFullYear();
+
+
+      const verjaardagDitJaar =
+        new Date(
+          datum.getFullYear(),
+          geboorte.getMonth(),
+          geboorte.getDate()
+        );
+
+
+      if (datum < verjaardagDitJaar) {
+        leeftijd--;
+      }
+
+
+      return Math.max(0, leeftijd);
+
+    }
+
+
+    /* =========================
+       DATUM
+    ========================= */
+
+    function formatteerDatum(datum) {
+
+      if (!datum) {
+        return "";
+      }
+
+
+      const delen =
+        datum.split("-");
+
+
+      if (delen.length !== 3) {
+        return datum;
+      }
+
+
+      return (
+        delen[2] +
+        "-" +
+        delen[1] +
+        "-" +
+        delen[0]
+      );
+
+    }
+
+
+    /* =========================
+       BACK-UP MAKEN
+    ========================= */
+
+    function maakBackup() {
+
+      const gegevens = {};
+
+
+      for (
+        let i = 0;
+        i < localStorage.length;
+        i++
+      ) {
+
+        const sleutel =
+          localStorage.key(i);
+
+        gegevens[sleutel] =
+          localStorage.getItem(sleutel);
+
+      }
+
+
+      const backup = {
+
+        versie: 1,
+
+        datum:
+          new Date().toISOString(),
+
+        gegevens: gegevens
+
+      };
+
+
+      const inhoud =
+        JSON.stringify(
+          backup,
+          null,
+          2
+        );
+
+
+      const blob =
+        new Blob(
+          [inhoud],
+          {
+            type: "application/json"
+          }
+        );
+
+
+      const url =
+        URL.createObjectURL(blob);
+
+
+      const link =
+        document.createElement("a");
+
+      link.href = url;
+
+      link.download =
+        "houtlandse-hondenvrienden-backup-" +
+        vandaagAlsDatum() +
+        ".json";
+
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+
+
+      toonMelding(
+        "Back-up is gemaakt."
+      );
+
+    }
+
+
+    /* =========================
+       BACK-UP TERUGZETTEN
+    ========================= */
+
+    function zetBackupTerug(event) {
+
+      const bestand =
+        event.target.files[0];
+
+
+      if (!bestand) {
+        return;
+      }
+
+
+      const lezer =
+        new FileReader();
+
+
+      lezer.onload =
+        function(e) {
+
+          try {
+
+            const backup =
+              JSON.parse(
+                e.target.result
+              );
+
+
+            if (
+              !backup ||
+              !backup.gegevens ||
+              typeof backup.gegevens !== "object"
+            ) {
+
+              throw new Error(
+                "Ongeldige back-up"
+              );
+
+            }
+
+
+            const akkoord =
+              confirm(
+                "Let op!\n\n" +
+                "De huidige gegevens worden vervangen door de gegevens uit deze back-up.\n\n" +
+                "Wil je doorgaan?"
+              );
+
+
+            if (!akkoord) {
+
+              event.target.value = "";
+
+              return;
+
+            }
+
+
+            Object.keys(backup.gegevens)
+              .forEach(function(sleutel) {
+
+                localStorage.setItem(
+                  sleutel,
+                  backup.gegevens[sleutel]
+                );
+
+              });
+
+
+            toonMelding(
+              "Back-up teruggezet. De pagina wordt vernieuwd..."
+            );
+
+
+            setTimeout(
+              function() {
+                location.reload();
+              },
+              900
+            );
+
+
+          } catch (fout) {
+
+            alert(
+              "Deze back-up kon niet worden teruggezet.\n\n" +
+              "Controleer of je een geldige back-up van de Houtlandse Hondenvrienden gebruikt."
+            );
+
+          }
+
+
+          event.target.value = "";
+
+        };
+
+
+      lezer.readAsText(bestand);
+
+    }
+
+
+    /* =========================
+       VANDAAG
+    ========================= */
+
+    function vandaagAlsDatum() {
+
+      const datum =
+        new Date();
+
+
+      const jaar =
+        datum.getFullYear();
+
+
+      const maand =
+        String(
+          datum.getMonth() + 1
+        ).padStart(2, "0");
+
+
+      const dag =
+        String(
+          datum.getDate()
+        ).padStart(2, "0");
+
+
+      return (
+        jaar +
+        "-" +
+        maand +
+        "-" +
+        dag
+      );
+
+    }
+
+
+    /* =========================
+       MELDING
+    ========================= */
+
+    function toonMelding(tekst) {
+
+      const melding =
+        document.getElementById(
+          "melding"
+        );
+
+
+      melding.textContent =
+        tekst;
+
+
+      melding.style.display =
+        "block";
+
+
+      setTimeout(
+        function() {
+
+          melding.style.display =
+            "none";
+
+        },
+        3000
+      );
+
+    }
+
+
+    /* =========================
+       VEILIGE HTML
+    ========================= */
+
+    function escapeHtml(tekst) {
+
+      if (
+        tekst === null ||
+        tekst === undefined
+      ) {
+
+        return "";
+
+      }
+
+
+      return String(tekst)
+
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+
+        .replace(
+          /</g,
+          "&lt;"
+        )
+
+        .replace(
+          />/g,
+          "&gt;"
+        )
+
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+  </script>
+
+</body>
+</html>
+```

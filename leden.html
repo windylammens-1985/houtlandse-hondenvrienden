@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Leden - Houtlandse Hondenvrienden</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f4f4f4;
+        color: #222;
+    }
+
+    .pagina {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* =========================
+       KOP
+       ========================= */
+
+    .kop {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .kop h1 {
+        margin: 10px 0 5px;
+        font-size: 30px;
+    }
+
+    .ondertitel {
+        margin: 0;
+        color: #666;
+    }
+
+    .terug-knop {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        background: #777;
+        color: white;
+        text-decoration: none;
+        font-size: 15px;
+    }
+
+    .terug-knop:hover {
+        background: #555;
+    }
+
+    /* =========================
+       STATISTIEKEN
+       ========================= */
+
+    .statistieken {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .statistiek {
+        background: white;
+        padding: 18px 10px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .statistiek-icoon {
+        font-size: 25px;
+    }
+
+    .statistiek-getal {
+        display: block;
+        margin-top: 5px;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .statistiek-label {
+        display: block;
+        margin-top: 3px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    /* =========================
+       FORMULIER
+       ========================= */
+
+    .formulier,
+    .zoek,
+    .sorteren {
+        background: white;
+        padding: 18px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .formulier h2,
+    .zoek h2 {
+        margin-top: 0;
+    }
+
+    label {
+        display: block;
+        margin-top: 12px;
+        font-weight: bold;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 11px;
+        margin-top: 6px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        background: white;
+    }
+
+    input:focus,
+    select:focus {
+        outline: none;
+        border-color: #2196f3;
+        box-shadow: 0 0 0 2px rgba(33,150,243,0.12);
+    }
+
+    .optioneel {
+        color: #777;
+        font-size: 13px;
+        font-weight: normal;
+    }
+
+    .formulier-knoppen {
+        margin-top: 18px;
+    }
+
+    button {
+        padding: 11px 15px;
+        margin: 4px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    button:hover {
+        opacity: 0.9;
+    }
+
+    .toevoegen {
+        width: calc(100% - 8px);
+        background: #4caf50;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .annuleren {
+        width: calc(100% - 8px);
+        background: #777;
+        color: white;
+    }
+
+    /* =========================
+       ZOEKEN EN SORTEREN
+       ========================= */
+
+    .zoek h2 {
+        margin-bottom: 8px;
+    }
+
+    .resultaat {
+        margin: 10px 0 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .sorteren {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .sorteren label {
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .sorteren select {
+        margin: 0;
+    }
+
+    /* =========================
+       LEDEN
+       ========================= */
+
+    .leden-lijst {
+        display: grid;
+        gap: 15px;
+    }
+
+    .lid {
+        background: white;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .lid-kop {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .lid h3 {
+        margin: 0;
+        font-size: 20px;
+    }
+
+    .lidduur {
+        background: #eef6ff;
+        color: #1976d2;
+        padding: 6px 9px;
+        border-radius: 8px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .gegevens {
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+    }
+
+    .gegeven {
+        margin: 8px 0;
+        line-height: 1.4;
+    }
+
+    .gegeven strong {
+        display: inline-block;
+        min-width: 145px;
+    }
+
+    .knoppen {
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
+
+    .bewerken {
+        background: #2196f3;
+        color: white;
+    }
+
+    .verwijderen {
+        background: #f44336;
+        color: white;
+    }
+
+    .geen-leden {
+        background: white;
+        padding: 30px 20px;
+        border-radius: 12px;
+        text-align: center;
+        color: #666;
+    }
+
+    .geen-leden-groot {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    /* =========================
+       MELDING
+       ========================= */
+
+    .melding {
+        position: fixed;
+        left: 50%;
+        bottom: 20px;
+        transform: translateX(-50%);
+        background: #333;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        display: none;
+        z-index: 1000;
+    }
+
+    /* =========================
+       MOBIEL
+       ========================= */
+
+    @media (max-width: 600px) {
+
+        body {
+            padding: 12px;
+        }
+
+        .kop h1 {
+            font-size: 25px;
+        }
+
+        .statistieken {
+            grid-template-columns: 1fr;
+        }
+
+        .statistiek {
+            padding: 12px;
+        }
+
+        .statistiek-getal {
+            font-size: 22px;
+        }
+
+        .lid-kop {
+            flex-direction: column;
+        }
+
+        .lidduur {
+            align-self: flex-start;
+        }
+
+        .gegeven strong {
+            display: block;
+            min-width: 0;
+            margin-bottom: 2px;
+        }
+
+        .sorteren {
+            display: block;
+        }
+
+        .sorteren label {
+            display: block;
+            margin-bottom: 6px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="pagina">
+
+```
+<!-- =========================
+     KOP
+     ========================= -->
+
+<div class="kop">
+
+    <h1>🐕 Houtlandse Hondenvrienden</h1>
+
+    <p class="ondertitel">
+        👥 Ledenbeheer
+    </p>
+
+    <a href="index.html" class="terug-knop">
+        ← Terug naar menu
+    </a>
+
+</div>
+
+
+<!-- =========================
+     STATISTIEKEN
+     ========================= -->
+
+<div class="statistieken">
+
+    <div class="statistiek">
+        <span class="statistiek-icoon">👥</span>
+        <span class="statistiek-getal" id="aantalLeden">0</span>
+        <span class="statistiek-label">Leden</span>
+    </div>
+
+    <div class="statistiek">
+        <span class="statistiek-icoon">🐕</span>
+        <span class="statistiek-getal" id="aantalHonden">0</span>
+        <span class="statistiek-label">Honden</span>
+    </div>
+
+    <div class="statistiek">
+        <span class="statistiek-icoon">📅</span>
+        <span class="statistiek-getal" id="gemiddeldeLidduur">0</span>
+        <span class="statistiek-label">Gemiddelde lidduur</span>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FORMULIER
+     ========================= -->
+
+<div class="formulier">
+
+    <h2 id="formulierTitel">
+        Nieuw lid toevoegen
+    </h2>
+
+    <label for="naamLid">
+        Naam lid *
+    </label>
+
+    <input
+        type="text"
+        id="naamLid"
+        autocomplete="name"
+        placeholder="Bijvoorbeeld Jan Janssens"
+    >
+
+
+    <label for="naamHond">
+        Naam hond
+        <span class="optioneel">(optioneel)</span>
+    </label>
+
+    <input
+        type="text"
+        id="naamHond"
+        placeholder="Bijvoorbeeld Max"
+    >
+
+
+    <label for="rasHond">
+        Ras hond
+        <span class="optioneel">(optioneel)</span>
+    </label>
+
+    <input
+        type="text"
+        id="rasHond"
+        placeholder="Bijvoorbeeld Labrador"
+    >
+
+
+    <label for="chipnummer">
+        Chipnummer
+        <span class="optioneel">(optioneel)</span>
+    </label>
+
+    <input
+        type="text"
+        id="chipnummer"
+        inputmode="numeric"
+        placeholder="Bijvoorbeeld 981020000123456"
+    >
+
+
+    <label for="geboorteHond">
+        Geboortedatum hond
+        <span class="optioneel">(optioneel)</span>
+    </label>
+
+    <input
+        type="date"
+        id="geboorteHond"
+    >
+
+
+    <label for="lidSinds">
+        Lid sinds *
+    </label>
+
+    <input
+        type="date"
+        id="lidSinds"
+    >
+
+
+    <div class="formulier-knoppen">
+
+        <button
+            class="toevoegen"
+            id="opslaanKnop"
+            onclick="opslaanLid()">
+            ➕ Lid toevoegen
+        </button>
+
+        <button
+            class="annuleren"
+            id="annuleerKnop"
+            onclick="annuleerBewerken()"
+            style="display:none;">
+            ✖ Annuleren
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ZOEKEN
+     ========================= -->
+
+<div class="zoek">
+
+    <h2>🔎 Leden zoeken</h2>
+
+    <input
+        type="search"
+        id="zoekveld"
+        placeholder="Zoek op naam, hond, ras of chipnummer..."
+        oninput="toonLeden()"
+    >
+
+    <p
+        class="resultaat"
+        id="resultaatTekst">
+        0 leden
+    </p>
+
+</div>
+
+
+<!-- =========================
+     SORTEREN
+     ========================= -->
+
+<div class="sorteren">
+
+    <label for="sorteerOp">
+        Sorteren:
+    </label>
+
+    <select
+        id="sorteerOp"
+        onchange="toonLeden()">
+
+        <option value="naam">
+            Naam A → Z
+        </option>
+
+        <option value="naamZA">
+            Naam Z → A
+        </option>
+
+        <option value="lidSindsNieuw">
+            Nieuwste leden eerst
+        </option>
+
+        <option value="lidSindsOud">
+            Langst lid eerst
+        </option>
+
+        <option value="hond">
+            Hond A → Z
+        </option>
+
+    </select>
+
+</div>
+
+
+<!-- =========================
+     LEDENLIJST
+     ========================= -->
+
+<div
+    id="ledenLijst"
+    class="leden-lijst">
+</div>
+```
+
+</div>
+
+<div
+    id="melding"
+    class="melding">
+</div>
+
+<script>
+
+    // =========================================
+    // GEGEVENS
+    // =========================================
+
+    let leden =
+        JSON.parse(localStorage.getItem("leden")) || [];
+
+    let bewerkId = null;
+
+
+    // =========================================
+    // INITIALISEREN
+    // =========================================
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            document.getElementById("lidSinds").value =
+                vandaagAlsDatum();
+
+            toonLeden();
+
+        }
+    );
+
+
+    // =========================================
+    // VANDAAG ALS YYYY-MM-DD
+    // =========================================
+
+    function vandaagAlsDatum() {
+
+        const vandaag = new Date();
+
+        const jaar =
+            vandaag.getFullYear();
+
+        const maand =
+            String(
+                vandaag.getMonth() + 1
+            ).padStart(2, "0");
+
+        const dag =
+            String(
+                vandaag.getDate()
+            ).padStart(2, "0");
+
+        return jaar + "-" + maand + "-" + dag;
+    }
+
+
+    // =========================================
+    // OPSLAAN
+    // =========================================
+
+    function opslaanLid() {
+
+        const naamLid =
+            document.getElementById("naamLid")
+            .value
+            .trim();
+
+        const naamHond =
+            document.getElementById("naamHond")
+            .value
+            .trim();
+
+        const rasHond =
+            document.getElementById("rasHond")
+            .value
+            .trim();
+
+        const chipnummer =
+            document.getElementById("chipnummer")
+            .value
+            .trim();
+
+        const geboorteHond =
+            document.getElementById("geboorteHond")
+            .value;
+
+        const lidSinds =
+            document.getElementById("lidSinds")
+            .value;
+
+
+        if (!naamLid || !lidSinds) {
+
+            alert(
+                "Vul minstens de naam van het lid en de datum 'Lid sinds' in."
+            );
+
+            return;
+        }
+
+
+        if (!geldigeDatum(lidSinds)) {
+
+            alert(
+                "De datum 'Lid sinds' is niet geldig."
+            );
+
+            return;
+        }
+
+
+        if (
+            geboorteHond &&
+            !geldigeDatum(geboorteHond)
+        ) {
+
+            alert(
+                "De geboortedatum van de hond is niet geldig."
+            );
+
+            return;
+        }
+
+
+        // Bewerken
+        if (bewerkId !== null) {
+
+            const lid =
+                leden.find(
+                    lid => lid.id === bewerkId
+                );
+
+            if (!lid) {
+                return;
+            }
+
+
+            lid.naamLid = naamLid;
+            lid.naamHond = naamHond;
+            lid.rasHond = rasHond;
+            lid.chipnummer = chipnummer;
+            lid.geboorteHond = geboorteHond;
+            lid.lidSinds = lidSinds;
+
+
+            toonMelding(
+                "Lid aangepast."
+            );
+
+        }
+
+        // Nieuw lid
+        else {
+
+            const nieuwLid = {
+
+                id: Date.now(),
+
+                naamLid: naamLid,
+
+                naamHond: naamHond,
+
+                rasHond: rasHond,
+
+                chipnummer: chipnummer,
+
+                geboorteHond: geboorteHond,
+
+                lidSinds: lidSinds
+
+            };
+
+
+            leden.push(nieuwLid);
+
+
+            toonMelding(
+                "Lid toegevoegd."
+            );
+        }
+
+
+        bewaarLeden();
+
+        formulierLeegmaken();
+
+        bewerkId = null;
+
+        formulierNormaal();
+
+        toonLeden();
+    }
+
+
+    // =========================================
+    // FORMULIER RESETTEN
+    // =========================================
+
+    function formulierLeegmaken() {
+
+        document.getElementById("naamLid").value = "";
+
+        document.getElementById("naamHond").value = "";
+
+        document.getElementById("rasHond").value = "";
+
+        document.getElementById("chipnummer").value = "";
+
+        document.getElementById("geboorteHond").value = "";
+
+        document.getElementById("lidSinds").value =
+            vandaagAlsDatum();
+    }
+
+
+    // =========================================
+    // FORMULIER NORMAAL
+    // =========================================
+
+    function formulierNormaal() {
+
+        document.getElementById(
+            "formulierTitel"
+        ).innerText =
+            "Nieuw lid toevoegen";
+
+
+        document.getElementById(
+            "opslaanKnop"
+        ).innerText =
+            "➕ Lid toevoegen";
+
+
+        document.getElementById(
+            "annuleerKnop"
+        ).style.display =
+            "none";
+    }
+
+
+    // =========================================
+    // LID BEWERKEN
+    // =========================================
+
+    function bewerkLid(id) {
+
+        const lid =
+            leden.find(
+                lid => lid.id === id
+            );
+
+        if (!lid) {
+            return;
+        }
+
+
+        document.getElementById(
+            "naamLid"
+        ).value =
+            lid.naamLid || "";
+
+
+        document.getElementById(
+            "naamHond"
+        ).value =
+            lid.naamHond || "";
+
+
+        document.getElementById(
+            "rasHond"
+        ).value =
+            lid.rasHond || "";
+
+
+        document.getElementById(
+            "chipnummer"
+        ).value =
+            lid.chipnummer || "";
+
+
+        document.getElementById(
+            "geboorteHond"
+        ).value =
+            lid.geboorteHond || "";
+
+
+        document.getElementById(
+            "lidSinds"
+        ).value =
+            lid.lidSinds || "";
+
+
+        bewerkId = id;
+
+
+        document.getElementById(
+            "formulierTitel"
+        ).innerText =
+            "✏️ Lid bewerken";
+
+
+        document.getElementById(
+            "opslaanKnop"
+        ).innerText =
+            "💾 Wijzigingen opslaan";
+
+
+        document.getElementById(
+            "annuleerKnop"
+        ).style.display =
+            "block";
+
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+    }
+
+
+    // =========================================
+    // BEWERKEN ANNULEREN
+    // =========================================
+
+    function annuleerBewerken() {
+
+        bewerkId = null;
+
+        formulierLeegmaken();
+
+        formulierNormaal();
+    }
+
+
+    // =========================================
+    // LID VERWIJDEREN
+    // =========================================
+
+    function verwijderLid(id) {
+
+        const lid =
+            leden.find(
+                lid => lid.id === id
+            );
+
+        if (!lid) {
+            return;
+        }
+
+
+        const akkoord =
+            confirm(
+                "Weet je zeker dat je " +
+                lid.naamLid +
+                " wilt verwijderen?\n\n" +
+                "Deze actie kan niet automatisch ongedaan worden gemaakt."
+            );
+
+
+        if (!akkoord) {
+            return;
+        }
+
+
+        leden =
+            leden.filter(
+                lid => lid.id !== id
+            );
+
+
+        bewaarLeden();
+
+        toonLeden();
+
+        toonMelding(
+            "Lid verwijderd."
+        );
+    }
+
+
+    // =========================================
+    // LEDEN BEWAREN
+    // =========================================
+
+    function bewaarLeden() {
+
+        localStorage.setItem(
+            "leden",
+            JSON.stringify(leden)
+        );
+    }
+
+
+    // =========================================
+    // LEDEN TONEN
+    // =========================================
+
+    function toonLeden() {
+
+        const lijst =
+            document.getElementById(
+                "ledenLijst"
+            );
+
+
+        const zoekterm =
+            document.getElementById(
+                "zoekveld"
+            )
+            .value
+            .toLowerCase()
+            .trim();
+
+
+        const sorteerOp =
+            document.getElementById(
+                "sorteerOp"
+            ).value;
+
+
+        let gevondenLeden =
+            leden.filter(
+                function(lid) {
+
+                    const naamLid =
+                        String(
+                            lid.naamLid || ""
+                        ).toLowerCase();
+
+                    const naamHond =
+                        String(
+                            lid.naamHond || ""
+                        ).toLowerCase();
+
+                    const rasHond =
+                        String(
+                            lid.rasHond || ""
+                        ).toLowerCase();
+
+                    const chipnummer =
+                        String(
+                            lid.chipnummer || ""
+                        ).toLowerCase();
+
+
+                    return (
+
+                        naamLid.includes(
+                            zoekterm
+                        ) ||
+
+                        naamHond.includes(
+                            zoekterm
+                        ) ||
+
+                        rasHond.includes(
+                            zoekterm
+                        ) ||
+
+                        chipnummer.includes(
+                            zoekterm
+                        )
+
+                    );
+                }
+            );
+
+
+        // =====================================
+        // SORTEREN
+        // =====================================
+
+        gevondenLeden.sort(
+            function(a, b) {
+
+                if (sorteerOp === "naam") {
+
+                    return vergelijk(
+                        a.naamLid,
+                        b.naamLid
+                    );
+                }
+
+
+                if (sorteerOp === "naamZA") {
+
+                    return vergelijk(
+                        b.naamLid,
+                        a.naamLid
+                    );
+                }
+
+
+                if (
+                    sorteerOp ===
+                    "lidSindsNieuw"
+                ) {
+
+                    return String(
+                        b.lidSinds || ""
+                    ).localeCompare(
+                        String(
+                            a.lidSinds || ""
+                        )
+                    );
+                }
+
+
+                if (
+                    sorteerOp ===
+                    "lidSindsOud"
+                ) {
+
+                    return String(
+                        a.lidSinds || ""
+                    ).localeCompare(
+                        String(
+                            b.lidSinds || ""
+                        )
+                    );
+                }
+
+
+                if (sorteerOp === "hond") {
+
+                    return vergelijk(
+                        a.naamHond,
+                        b.naamHond
+                    );
+                }
+
+
+                return 0;
+            }
+        );
+
+
+        // =====================================
+        // RESULTAATTEKST
+        // =====================================
+
+        const resultaatTekst =
+            document.getElementById(
+                "resultaatTekst"
+            );
+
+
+        if (zoekterm) {
+
+            resultaatTekst.innerText =
+                gevondenLeden.length +
+                " resultaat" +
+                (
+                    gevondenLeden.length === 1
+                    ? ""
+                    : "en"
+                ) +
+                " voor '" +
+                zoekterm +
+                "'";
+
+        } else {
+
+            resultaatTekst.innerText =
+                gevondenLeden.length +
+                " lid" +
+                (
+                    gevondenLeden.length === 1
+                    ? ""
+                    : "en"
+                );
+        }
+
+
+        lijst.innerHTML = "";
+
+
+        // =====================================
+        // GEEN LEDEN
+        // =====================================
+
+        if (gevondenLeden.length === 0) {
+
+            lijst.innerHTML = `
+
+                <div class="geen-leden">
+
+                    <div class="geen-leden-groot">
+                        👥
+                    </div>
+
+                    <strong>
+                        Geen leden gevonden
+                    </strong>
+
+                    <p>
+                        ${
+                            zoekterm
+                            ? "Probeer een andere zoekterm."
+                            : "Voeg hierboven je eerste lid toe."
+                        }
+                    </p>
+
+                </div>
+
+            `;
+
+            updateStatistieken();
+
+            return;
+        }
+
+
+        // =====================================
+        // KAARTEN
+        // =====================================
+
+        gevondenLeden.forEach(
+            function(lid) {
+
+                const kaart =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                kaart.className = "lid";
+
+
+                const hondNaam =
+                    lid.naamHond ||
+                    "Nog geen hond";
+
+
+                const ras =
+                    lid.rasHond ||
+                    "Niet ingevuld";
+
+
+                const chip =
+                    lid.chipnummer ||
+                    "Niet ingevuld";
+
+
+                const geboorte =
+                    lid.geboorteHond
+                    ? formatteerDatum(
+                        lid.geboorteHond
+                    )
+                    : "Niet ingevuld";
+
+
+                const lidSinds =
+                    lid.lidSinds
+                    ? formatteerDatum(
+                        lid.lidSinds
+                    )
+                    : "Niet ingevuld";
+
+
+                const lidduur =
+                    berekenLidduur(
+                        lid.lidSinds
+                    );
+
+
+                const heeftHond =
+                    Boolean(
+                        lid.naamHond
+                    );
+
+
+                kaart.innerHTML = `
+
+                    <div class="lid-kop">
+
+                        <h3>
+                            👤 ${escapeHtml(
+                                lid.naamLid
+                            )}
+                        </h3>
+
+                        <span class="lidduur">
+                            ⏳ ${escapeHtml(
+                                lidduur
+                            )}
+                        </span>
+
+                    </div>
+
+
+                    <div class="gegevens">
+
+                        <div class="gegeven">
+                            <strong>🐕 Hond:</strong>
+                            ${escapeHtml(
+                                hondNaam
+                            )}
+                        </div>
+
+                        <div class="gegeven">
+                            <strong>🐾 Ras:</strong>
+                            ${escapeHtml(
+                                ras
+                            )}
+                        </div>
+
+                        <div class="gegeven">
+                            <strong>🔢 Chipnummer:</strong>
+                            ${escapeHtml(
+                                chip
+                            )}
+                        </div>
+
+                        <div class="gegeven">
+                            <strong>🎂 Geboortedatum:</strong>
+                            ${escapeHtml(
+                                geboorte
+                            )}
+                        </div>
+
+                        <div class="gegeven">
+                            <strong>📅 Lid sinds:</strong>
+                            ${escapeHtml(
+                                lidSinds
+                            )}
+                        </div>
+
+                    </div>
+
+
+                    <div class="knoppen">
+
+                        <button
+                            class="bewerken"
+                            onclick="bewerkLid(${lid.id})">
+                            ✏️ Bewerken
+                        </button>
+
+                        <button
+                            class="verwijderen"
+                            onclick="verwijderLid(${lid.id})">
+                            🗑️ Verwijderen
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                lijst.appendChild(
+                    kaart
+                );
+            }
+        );
+
+
+        updateStatistieken();
+    }
+
+
+    // =========================================
+    // STATISTIEKEN
+    // =========================================
+
+    function updateStatistieken() {
+
+        document.getElementById(
+            "aantalLeden"
+        ).innerText =
+            leden.length;
+
+
+        const aantalHonden =
+            leden.filter(
+                lid => lid.naamHond &&
+                       lid.naamHond.trim() !== ""
+            ).length;
+
+
+        document.getElementById(
+            "aantalHonden"
+        ).innerText =
+            aantalHonden;
+
+
+        if (leden.length === 0) {
+
+            document.getElementById(
+                "gemiddeldeLidduur"
+            ).innerText =
+                "0";
+
+            return;
+        }
+
+
+        let totaalDagen = 0;
+        let geldigeLeden = 0;
+
+
+        leden.forEach(
+            function(lid) {
+
+                if (!lid.lidSinds) {
+                    return;
+                }
+
+
+                const start =
+                    new Date(
+                        lid.lidSinds
+                    );
+
+
+                const vandaag =
+                    new Date();
+
+
+                if (
+                    isNaToekomst(
+                        start,
+                        vandaag
+                    )
+                ) {
+                    return;
+                }
+
+
+                const verschil =
+                    vandaag.getTime() -
+                    start.getTime();
+
+
+                totaalDagen +=
+                    verschil /
+                    (
+                        1000 *
+                        60 *
+                        60 *
+                        24
+                    );
+
+
+                geldigeLeden++;
+            }
+        );
+
+
+        if (geldigeLeden === 0) {
+
+            document.getElementById(
+                "gemiddeldeLidduur"
+            ).innerText =
+                "0";
+
+            return;
+        }
+
+
+        const gemiddeldeJaren =
+            totaalDagen /
+            geldigeLeden /
+            365.25;
+
+
+        if (gemiddeldeJaren < 1) {
+
+            const maanden =
+                Math.round(
+                    gemiddeldeJaren * 12
+                );
+
+
+            document.getElementById(
+                "gemiddeldeLidduur"
+            ).innerText =
+                maanden + " mnd";
+
+        } else {
+
+            document.getElementById(
+                "gemiddeldeLidduur"
+            ).innerText =
+                gemiddeldeJaren.toFixed(1) +
+                " jaar";
+        }
+    }
+
+
+    // =========================================
+    // LIDDUUR BEREKENEN
+    // =========================================
+
+    function berekenLidduur(datum) {
+
+        if (!datum) {
+            return "Onbekend";
+        }
+
+
+        const start =
+            new Date(datum);
+
+
+        const vandaag =
+            new Date();
+
+
+        if (
+            isNaToekomst(
+                start,
+                vandaag
+            )
+        ) {
+            return "Startdatum ligt in de toekomst";
+        }
+
+
+        let jaren =
+            vandaag.getFullYear() -
+            start.getFullYear();
+
+
+        let maanden =
+            vandaag.getMonth() -
+            start.getMonth();
+
+
+        if (
+            maanden < 0 ||
+            (
+                maanden === 0 &&
+                vandaag.getDate() <
+                start.getDate()
+            )
+        ) {
+
+            jaren--;
+        }
+
+
+        if (jaren >= 1) {
+
+            return jaren +
+                " jaar" +
+                (
+                    jaren === 1
+                    ? ""
+                    : " "
+                );
+
+        }
+
+
+        let totaalMaanden =
+            (
+                vandaag.getFullYear() -
+                start.getFullYear()
+            ) * 12 +
+            (
+                vandaag.getMonth() -
+                start.getMonth()
+            );
+
+
+        if (
+            vandaag.getDate() <
+            start.getDate()
+        ) {
+
+            totaalMaanden--;
+        }
+
+
+        totaalMaanden =
+            Math.max(
+                0,
+                totaalMaanden
+            );
+
+
+        return totaalMaanden +
+            " maand" +
+            (
+                totaalMaanden === 1
+                ? ""
+                : "en"
+            );
+    }
+
+
+    // =========================================
+    // DATUM WEERGEVEN
+    // =========================================
+
+    function formatteerDatum(datum) {
+
+        if (!datum) {
+            return "";
+        }
+
+
+        const delen =
+            datum.split("-");
+
+
+        if (delen.length !== 3) {
+            return datum;
+        }
+
+
+        return (
+            delen[2] +
+            "-" +
+            delen[1] +
+            "-" +
+            delen[0]
+        );
+    }
+
+
+    // =========================================
+    // DATUM CONTROLEREN
+    // =========================================
+
+    function geldigeDatum(datum) {
+
+        if (!datum) {
+            return false;
+        }
+
+
+        const waarde =
+            new Date(datum);
+
+
+        return !isNaN(
+            waarde.getTime()
+        );
+    }
+
+
+    // =========================================
+    // TOEKOMST CONTROLEREN
+    // =========================================
+
+    function isNaToekomst(
+        datum,
+        vandaag
+    ) {
+
+        const d1 =
+            new Date(
+                datum.getFullYear(),
+                datum.getMonth(),
+                datum.getDate()
+            );
+
+
+        const d2 =
+            new Date(
+                vandaag.getFullYear(),
+                vandaag.getMonth(),
+                vandaag.getDate()
+            );
+
+
+        return d1 > d2;
+    }
+
+
+    // =========================================
+    // TEKST VERGELIJKEN
+    // =========================================
+
+    function vergelijk(a, b) {
+
+        return String(
+            a || ""
+        ).localeCompare(
+            String(
+                b || ""
+            ),
+            "nl",
+            {
+                sensitivity: "base"
+            }
+        );
+    }
+
+
+    // =========================================
+    // HTML VEILIG MAKEN
+    // =========================================
+
+    function escapeHtml(tekst) {
+
+        return String(
+            tekst || ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+    }
+
+
+    // =========================================
+    // MELDING
+    // =========================================
+
+    let meldingTimer = null;
+
+
+    function toonMelding(tekst) {
+
+        const melding =
+            document.getElementById(
+                "melding"
+            );
+
+
+        melding.innerText =
+            tekst;
+
+
+        melding.style.display =
+            "block";
+
+
+        clearTimeout(
+            meldingTimer
+        );
+
+
+        meldingTimer =
+            setTimeout(
+                function() {
+
+                    melding.style.display =
+                        "none";
+
+                },
+                2500
+            );
+    }
+
+</script>
+
+</body>
+</html>

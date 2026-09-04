@@ -1,0 +1,930 @@
+```html
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistieken - Houtlandse Hondenvrienden</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f8;
+      color: #263238;
+    }
+
+    header {
+      background: #263238;
+      color: white;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.85;
+    }
+
+    .container {
+      width: min(1200px, 94%);
+      margin: 25px auto 40px;
+    }
+
+    .terug {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 15px;
+      background: white;
+      color: #263238;
+      text-decoration: none;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-weight: bold;
+    }
+
+    .terug:hover {
+      background: #eef1f3;
+    }
+
+    .melding {
+      display: none;
+      margin-bottom: 20px;
+      padding: 13px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .melding.succes {
+      display: block;
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .melding.fout {
+      display: block;
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .sectie {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .sectie h2 {
+      margin: 0 0 18px;
+      font-size: 21px;
+    }
+
+    .statistieken {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+
+    .stat {
+      background: #f8fafb;
+      border: 1px solid #e1e6e9;
+      border-radius: 10px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stat .nummer {
+      display: block;
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .stat .label {
+      color: #607d8b;
+      font-size: 14px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .filters input,
+    .filters select {
+      padding: 11px 12px;
+      border: 1px solid #cfd8dc;
+      border-radius: 8px;
+      font-size: 15px;
+      background: white;
+    }
+
+    .filters input {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .tabel-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #e5e9eb;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f4f6f8;
+      font-size: 14px;
+      color: #455a64;
+      white-space: nowrap;
+    }
+
+    tr:hover td {
+      background: #fafbfc;
+    }
+
+    .naam {
+      font-weight: bold;
+    }
+
+    .hond {
+      color: #607d8b;
+      font-size: 14px;
+    }
+
+    .percentage {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .balk {
+      width: 140px;
+      max-width: 100%;
+      height: 10px;
+      background: #e6eaec;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .balk-inner {
+      height: 100%;
+      background: #4caf50;
+      border-radius: 20px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .status.goed {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .status.gemiddeld {
+      background: #fff8e1;
+      color: #f57f17;
+    }
+
+    .status.laag {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .leeg {
+      text-align: center;
+      padding: 30px 15px;
+      color: #78909c;
+    }
+
+    .samenvatting {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 18px;
+    }
+
+    .samenvatting-kaart {
+      padding: 16px;
+      border-radius: 10px;
+      background: #f8fafb;
+      border: 1px solid #e1e6e9;
+    }
+
+    .samenvatting-kaart strong {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .samenvatting-kaart span {
+      color: #607d8b;
+      font-size: 14px;
+    }
+
+    .datum {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1000px) {
+      .statistieken {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      header h1 {
+        font-size: 23px;
+      }
+
+      .container {
+        width: 95%;
+      }
+
+      .sectie {
+        padding: 16px;
+      }
+
+      .statistieken {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .samenvatting {
+        grid-template-columns: 1fr;
+      }
+
+      th,
+      td {
+        padding: 10px 8px;
+      }
+
+      .balk {
+        width: 90px;
+      }
+    }
+
+    @media (max-width: 450px) {
+      .statistieken {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        flex-direction: column;
+      }
+
+      .filters input,
+      .filters select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>📊 Statistieken</h1>
+  <p>Houtlandse Hondenvrienden</p>
+</header>
+
+<div class="container">
+
+  <a class="terug" href="index.html">← Terug naar menu</a>
+
+  <div id="melding" class="melding"></div>
+
+  <!-- ALGEMENE STATISTIEKEN -->
+  <section class="sectie">
+    <h2>📈 Algemeen overzicht</h2>
+
+    <div class="statistieken">
+      <div class="stat">
+        <span class="nummer" id="totaalLeden">0</span>
+        <span class="label">Leden</span>
+      </div>
+
+      <div class="stat">
+        <span class="nummer" id="totaalHonden">0</span>
+        <span class="label">Honden</span>
+      </div>
+
+      <div class="stat">
+        <span class="nummer" id="totaalTrainingen">0</span>
+        <span class="label">Trainingsdagen</span>
+      </div>
+
+      <div class="stat">
+        <span class="nummer" id="totaalAanwezig">0</span>
+        <span class="label">Aanwezigheden</span>
+      </div>
+
+      <div class="stat">
+        <span class="nummer" id="aanwezigheidsPercentage">0%</span>
+        <span class="label">Aanwezigheidspercentage</span>
+      </div>
+    </div>
+
+    <div class="samenvatting">
+      <div class="samenvatting-kaart">
+        <strong id="meestAanwezige">-</strong>
+        <span>Meest aanwezige lid</span>
+      </div>
+
+      <div class="samenvatting-kaart">
+        <strong id="hoogstePercentage">-</strong>
+        <span>Hoogste aanwezigheidspercentage</span>
+      </div>
+
+      <div class="samenvatting-kaart">
+        <strong id="druksteTraining">-</strong>
+        <span>Drukst bijgewoonde training</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PER LID -->
+  <section class="sectie">
+    <h2>👥 Aanwezigheid per lid</h2>
+
+    <div class="filters">
+      <input
+        type="search"
+        id="zoekveld"
+        placeholder="Zoek op naam, hond of ras..."
+        oninput="toonLeden()"
+      >
+
+      <select id="sorteer" onchange="toonLeden()">
+        <option value="naam">Naam A-Z</option>
+        <option value="percentage">Aanwezigheidspercentage</option>
+        <option value="aanwezig">Meeste aanwezig</option>
+        <option value="afwezig">Meeste afwezig</option>
+      </select>
+    </div>
+
+    <div class="tabel-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Lid</th>
+            <th>Hond</th>
+            <th>Aanwezig</th>
+            <th>Afwezig</th>
+            <th>Geregistreerd</th>
+            <th>Percentage</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody id="ledenTabel"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- PER TRAINING -->
+  <section class="sectie">
+    <h2>📅 Overzicht per trainingsdatum</h2>
+
+    <div class="tabel-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Geregistreerd</th>
+            <th>Aanwezig</th>
+            <th>Afwezig</th>
+            <th>Onbekend</th>
+            <th>Aanwezigheid</th>
+          </tr>
+        </thead>
+
+        <tbody id="trainingenTabel"></tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  let leden = [];
+  let aanwezigheden = {};
+
+  document.addEventListener("DOMContentLoaded", function() {
+    laadGegevens();
+    toonAlles();
+  });
+
+  function laadGegevens() {
+    try {
+      leden = JSON.parse(localStorage.getItem("leden")) || [];
+    } catch (e) {
+      leden = [];
+      toonMelding("De ledengegevens konden niet worden gelezen.", "fout");
+    }
+
+    try {
+      aanwezigheden = JSON.parse(localStorage.getItem("aanwezigheden")) || {};
+    } catch (e) {
+      aanwezigheden = {};
+      toonMelding("De aanwezigheidsgegevens konden niet worden gelezen.", "fout");
+    }
+
+    if (!Array.isArray(leden)) {
+      leden = [];
+    }
+
+    if (
+      typeof aanwezigheden !== "object" ||
+      aanwezigheden === null ||
+      Array.isArray(aanwezigheden)
+    ) {
+      aanwezigheden = {};
+    }
+  }
+
+  function toonAlles() {
+    updateAlgemeneStatistieken();
+    toonLeden();
+    toonTrainingen();
+  }
+
+  function updateAlgemeneStatistieken() {
+    const totaalLeden = leden.length;
+
+    const totaalHonden = leden.filter(function(lid) {
+      return lid.naamHond && String(lid.naamHond).trim() !== "";
+    }).length;
+
+    const datums = Object.keys(aanwezigheden)
+      .filter(function(datum) {
+        return aanwezigheden[datum] &&
+               typeof aanwezigheden[datum] === "object";
+      });
+
+    let totaalAanwezig = 0;
+    let totaalAfwezig = 0;
+    let totaalGeregistreerd = 0;
+
+    const perLid = {};
+
+    leden.forEach(function(lid) {
+      perLid[lid.id] = {
+        aanwezig: 0,
+        afwezig: 0,
+        geregistreerd: 0
+      };
+    });
+
+    datums.forEach(function(datum) {
+      const gegevens = aanwezigheden[datum];
+
+      Object.keys(gegevens).forEach(function(memberId) {
+        const registratie = gegevens[memberId];
+
+        if (!registratie || typeof registratie !== "object") {
+          return;
+        }
+
+        const status = registratie.status;
+
+        if (status === "aanwezig") {
+          totaalAanwezig++;
+          totaalGeregistreerd++;
+
+          if (perLid[memberId]) {
+            perLid[memberId].aanwezig++;
+            perLid[memberId].geregistreerd++;
+          }
+        } else if (status === "afwezig") {
+          totaalAfwezig++;
+          totaalGeregistreerd++;
+
+          if (perLid[memberId]) {
+            perLid[memberId].afwezig++;
+            perLid[memberId].geregistreerd++;
+          }
+        }
+      });
+    });
+
+    const percentage = totaalGeregistreerd > 0
+      ? Math.round((totaalAanwezig / totaalGeregistreerd) * 100)
+      : 0;
+
+    document.getElementById("totaalLeden").textContent = totaalLeden;
+    document.getElementById("totaalHonden").textContent = totaalHonden;
+    document.getElementById("totaalTrainingen").textContent = datums.length;
+    document.getElementById("totaalAanwezig").textContent = totaalAanwezig;
+    document.getElementById("aanwezigheidsPercentage").textContent =
+      percentage + "%";
+
+    const lidStatistieken = leden.map(function(lid) {
+      const stats = perLid[lid.id] || {
+        aanwezig: 0,
+        afwezig: 0,
+        geregistreerd: 0
+      };
+
+      const pct = stats.geregistreerd > 0
+        ? Math.round((stats.aanwezig / stats.geregistreerd) * 100)
+        : 0;
+
+      return {
+        lid: lid,
+        aanwezig: stats.aanwezig,
+        afwezig: stats.afwezig,
+        geregistreerd: stats.geregistreerd,
+        percentage: pct
+      };
+    });
+
+    const metRegistraties = lidStatistieken.filter(function(item) {
+      return item.geregistreerd > 0;
+    });
+
+    if (metRegistraties.length > 0) {
+      const meestAanwezige = [...metRegistraties].sort(function(a, b) {
+        return b.aanwezig - a.aanwezig;
+      })[0];
+
+      const hoogstePercentage = [...metRegistraties].sort(function(a, b) {
+        if (b.percentage !== a.percentage) {
+          return b.percentage - a.percentage;
+        }
+
+        return b.geregistreerd - a.geregistreerd;
+      })[0];
+
+      document.getElementById("meestAanwezige").textContent =
+        meestAanwezige.lid.naamLid +
+        " (" + meestAanwezige.aanwezig + ")";
+
+      document.getElementById("hoogstePercentage").textContent =
+        hoogstePercentage.lid.naamLid +
+        " (" + hoogstePercentage.percentage + "%)";
+    } else {
+      document.getElementById("meestAanwezige").textContent = "-";
+      document.getElementById("hoogstePercentage").textContent = "-";
+    }
+
+    const trainingStats = datums.map(function(datum) {
+      const gegevens = aanwezigheden[datum];
+
+      let aanwezig = 0;
+      let afwezig = 0;
+
+      Object.keys(gegevens).forEach(function(memberId) {
+        const registratie = gegevens[memberId];
+
+        if (!registratie || typeof registratie !== "object") {
+          return;
+        }
+
+        if (registratie.status === "aanwezig") {
+          aanwezig++;
+        }
+
+        if (registratie.status === "afwezig") {
+          afwezig++;
+        }
+      });
+
+      return {
+        datum: datum,
+        aanwezig: aanwezig,
+        afwezig: afwezig,
+        totaal: aanwezig + afwezig
+      };
+    });
+
+    const drukste = trainingStats
+      .filter(function(item) {
+        return item.totaal > 0;
+      })
+      .sort(function(a, b) {
+        return b.aanwezig - a.aanwezig;
+      })[0];
+
+    document.getElementById("druksteTraining").textContent =
+      drukste
+        ? formatteerDatum(drukste.datum) + " (" + drukste.aanwezig + ")"
+        : "-";
+  }
+
+  function toonLeden() {
+    const tbody = document.getElementById("ledenTabel");
+    const zoekterm = document
+      .getElementById("zoekveld")
+      .value
+      .trim()
+      .toLowerCase();
+
+    const sorteer = document.getElementById("sorteer").value;
+
+    const statistieken = leden.map(function(lid) {
+      let aanwezig = 0;
+      let afwezig = 0;
+
+      Object.keys(aanwezigheden).forEach(function(datum) {
+        const gegevens = aanwezigheden[datum];
+
+        if (!gegevens || typeof gegevens !== "object") {
+          return;
+        }
+
+        const registratie = gegevens[lid.id];
+
+        if (!registratie || typeof registratie !== "object") {
+          return;
+        }
+
+        if (registratie.status === "aanwezig") {
+          aanwezig++;
+        } else if (registratie.status === "afwezig") {
+          afwezig++;
+        }
+      });
+
+      const geregistreerd = aanwezig + afwezig;
+
+      const percentage = geregistreerd > 0
+        ? Math.round((aanwezig / geregistreerd) * 100)
+        : 0;
+
+      return {
+        lid: lid,
+        aanwezig: aanwezig,
+        afwezig: afwezig,
+        geregistreerd: geregistreerd,
+        percentage: percentage
+      };
+    });
+
+    const gefilterd = statistieken.filter(function(item) {
+      const lid = item.lid;
+
+      const tekst = [
+        lid.naamLid || "",
+        lid.naamHond || "",
+        lid.rasHond || "",
+        lid.chipnummer || ""
+      ]
+      .join(" ")
+      .toLowerCase();
+
+      return tekst.includes(zoekterm);
+    });
+
+    gefilterd.sort(function(a, b) {
+      if (sorteer === "percentage") {
+        if (b.percentage !== a.percentage) {
+          return b.percentage - a.percentage;
+        }
+
+        return a.lid.naamLid.localeCompare(
+          b.lid.naamLid,
+          "nl",
+          { sensitivity: "base" }
+        );
+      }
+
+      if (sorteer === "aanwezig") {
+        if (b.aanwezig !== a.aanwezig) {
+          return b.aanwezig - a.aanwezig;
+        }
+
+        return a.lid.naamLid.localeCompare(
+          b.lid.naamLid,
+          "nl",
+          { sensitivity: "base" }
+        );
+      }
+
+      if (sorteer === "afwezig") {
+        if (b.afwezig !== a.afwezig) {
+          return b.afwezig - a.afwezig;
+        }
+
+        return a.lid.naamLid.localeCompare(
+          b.lid.naamLid,
+          "nl",
+          { sensitivity: "base" }
+        );
+      }
+
+      return a.lid.naamLid.localeCompare(
+        b.lid.naamLid,
+        "nl",
+        { sensitivity: "base" }
+      );
+    });
+
+    if (gefilterd.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="leeg">
+            Geen leden gevonden.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = gefilterd.map(function(item) {
+      const lid = item.lid;
+
+      let statusClass = "";
+
+      if (item.geregistreerd === 0) {
+        statusClass = "";
+      } else if (item.percentage >= 75) {
+        statusClass = "goed";
+      } else if (item.percentage >= 50) {
+        statusClass = "gemiddeld";
+      } else {
+        statusClass = "laag";
+      }
+
+      const statusTekst = item.geregistreerd === 0
+        ? "Geen gegevens"
+        : item.percentage + "%";
+
+      const naamHond = lid.naamHond
+        ? escapeHtml(lid.naamHond)
+        : "—";
+
+      return `
+        <tr>
+          <td>
+            <div class="naam">${escapeHtml(lid.naamLid || "Onbekend")}</div>
+          </td>
+
+          <td>
+            <div class="hond">${naamHond}</div>
+          </td>
+
+          <td>${item.aanwezig}</td>
+          <td>${item.afwezig}</td>
+          <td>${item.geregistreerd}</td>
+
+          <td>
+            <div class="percentage">${statusTekst}</div>
+            ${
+              item.geregistreerd > 0
+                ? `
+                  <div class="balk">
+                    <div
+                      class="balk-inner"
+                      style="width:${item.percentage}%"
+                    ></div>
+                  </div>
+                `
+                : ""
+            }
+          </td>
+
+          <td>
+            ${
+              item.geregistreerd > 0
+                ? `<span class="status ${statusClass}">${statusTekst}</span>`
+                : `<span class="status">Geen gegevens</span>`
+            }
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  function toonTrainingen() {
+    const tbody = document.getElementById("trainingenTabel");
+
+    const datums = Object.keys(aanwezigheden)
+      .filter(function(datum) {
+        return aanwezigheden[datum] &&
+               typeof aanwezigheden[datum] === "object";
+      })
+      .sort(function(a, b) {
+        return b.localeCompare(a);
+      });
+
+    if (datums.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="leeg">
+            Er zijn nog geen aanwezigheden geregistreerd.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = datums.map(function(datum) {
+      const gegevens = aanwezigheden[datum];
+
+      let aanwezig = 0;
+      let afwezig = 0;
+      let onbekend = 0;
+
+      Object.keys(gegevens).forEach(function(memberId) {
+        const registratie = gegevens[memberId];
+
+        if (!registratie || typeof registratie !== "object") {
+          return;
+        }
+
+        if (registratie.status === "aanwezig") {
+          aanwezig++;
+        } else if (registratie.status === "afwezig") {
+          afwezig++;
+        } else {
+          onbekend++;
+        }
+      });
+
+      const geregistreerd = aanwezig + afwezig;
+      const percentage = geregistreerd > 0
+        ? Math.round((aanwezig / geregistreerd) * 100)
+        : 0;
+
+      return `
+        <tr>
+          <td class="datum">${formatteerDatum(datum)}</td>
+          <td>${geregistreerd}</td>
+          <td>${aanwezig}</td>
+          <td>${afwezig}</td>
+          <td>${onbekend}</td>
+          <td>
+            ${
+              geregistreerd > 0
+                ? percentage + "%"
+                : "—"
+            }
+          </td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  function formatteerDatum(datum) {
+    if (!datum) {
+      return "—";
+    }
+
+    const delen = String(datum).split("-");
+
+    if (delen.length !== 3) {
+      return escapeHtml(datum);
+    }
+
+    return delen[2] + "/" + delen[1] + "/" + delen[0];
+  }
+
+  function escapeHtml(waarde) {
+    return String(waarde ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function toonMelding(tekst, type) {
+    const melding = document.getElementById("melding");
+
+    melding.textContent = tekst;
+    melding.className = "melding " + type;
+
+    setTimeout(function() {
+      melding.className = "melding";
+    }, 4000);
+  }
+</script>
+
+</body>
+</html>
+```

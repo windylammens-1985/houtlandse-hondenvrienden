@@ -1,0 +1,1536 @@
+```html
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aanwezigheden - Houtlandse Hondenvrienden</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        .pagina {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .kop {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .kop h1 {
+            margin: 10px 0 5px;
+            font-size: 30px;
+        }
+
+        .ondertitel {
+            margin: 0;
+            color: #666;
+        }
+
+        .terug-knop {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: #777;
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .terug-knop:hover {
+            background: #555;
+        }
+
+        .kalender-knop {
+            display: inline-block;
+            margin-top: 15px;
+            margin-left: 5px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: #2196f3;
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .kalender-knop:hover {
+            background: #1976d2;
+        }
+
+        .datum-blok {
+            background: white;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .datum-blok h2 {
+            margin-top: 0;
+        }
+
+        .datum-blok label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2196f3;
+            box-shadow: 0 0 0 2px rgba(33,150,243,0.12);
+        }
+
+        .training-info {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: none;
+        }
+
+        .training-info strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .statistieken {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .statistiek {
+            background: white;
+            padding: 18px 10px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .statistiek-icoon {
+            font-size: 25px;
+        }
+
+        .statistiek-getal {
+            display: block;
+            margin-top: 5px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .statistiek-label {
+            display: block;
+            margin-top: 3px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .zoek {
+            background: white;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .zoek h2 {
+            margin-top: 0;
+        }
+
+        button {
+            padding: 11px 15px;
+            margin: 4px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .aanwezig-knop {
+            background: #4caf50;
+            color: white;
+        }
+
+        .afwezig-knop {
+            background: #f44336;
+            color: white;
+        }
+
+        .onbekend-knop {
+            background: #777;
+            color: white;
+        }
+
+        .actie-knoppen {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .alles-aanwezig {
+            background: #4caf50;
+            color: white;
+        }
+
+        .alles-afwezig {
+            background: #f44336;
+            color: white;
+        }
+
+        .reset {
+            background: #777;
+            color: white;
+        }
+
+        .leden-lijst {
+            display: grid;
+            gap: 15px;
+        }
+
+        .lid {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .lid.aanwezig {
+            border-left: 6px solid #4caf50;
+        }
+
+        .lid.afwezig {
+            border-left: 6px solid #f44336;
+        }
+
+        .lid.onbekend {
+            border-left: 6px solid #aaa;
+        }
+
+        .lid-kop {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .lid h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .status {
+            padding: 6px 9px;
+            border-radius: 8px;
+            font-size: 13px;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+        .status-aanwezig {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-afwezig {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .status-onbekend {
+            background: #eeeeee;
+            color: #666;
+        }
+
+        .lid-info {
+            color: #666;
+            margin: 8px 0;
+        }
+
+        .lid-acties {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .opmerking {
+            margin-top: 12px;
+        }
+
+        .opmerking label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .opmerking textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .opslaan-opmerking {
+            background: #2196f3;
+            color: white;
+            margin-left: 0;
+            margin-top: 7px;
+        }
+
+        .geen-leden {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: #666;
+        }
+
+        .geen-icoon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .melding {
+            position: fixed;
+            left: 50%;
+            bottom: 20px;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .kop h1 {
+                font-size: 25px;
+            }
+
+            .statistieken {
+                grid-template-columns: 1fr;
+            }
+
+            .statistiek {
+                padding: 12px;
+            }
+
+            .statistiek-getal {
+                font-size: 22px;
+            }
+
+            .lid-kop {
+                flex-direction: column;
+            }
+
+            .status {
+                align-self: flex-start;
+            }
+
+            .actie-knoppen {
+                display: block;
+            }
+
+            .actie-knoppen button {
+                width: calc(100% - 8px);
+            }
+
+            .terug-knop,
+            .kalender-knop {
+                display: block;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="pagina">
+
+    <div class="kop">
+
+        <h1>🐕 Houtlandse Hondenvrienden</h1>
+
+        <p class="ondertitel">
+            ✅ Aanwezigheden
+        </p>
+
+        <a href="index.html" class="terug-knop">
+            ← Terug naar dashboard
+        </a>
+
+        <a href="kalender.html" class="kalender-knop">
+            📅 Naar kalender
+        </a>
+
+    </div>
+
+
+    <div class="datum-blok">
+
+        <h2>📅 Trainingsdatum</h2>
+
+        <label for="trainingsDatum">
+            Kies de datum
+        </label>
+
+        <input
+            type="date"
+            id="trainingsDatum"
+            onchange="datumGewijzigd()"
+        >
+
+        <div
+            id="trainingInfo"
+            class="training-info">
+        </div>
+
+        <div class="actie-knoppen">
+
+            <button
+                class="alles-aanwezig"
+                onclick="iedereenAanwezig()">
+                ✅ Iedereen aanwezig
+            </button>
+
+            <button
+                class="alles-afwezig"
+                onclick="iedereenAfwezig()">
+                ❌ Iedereen afwezig
+            </button>
+
+            <button
+                class="reset"
+                onclick="allesOnbekend()">
+                ↩ Alles wissen
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="statistieken">
+
+        <div class="statistiek">
+            <span class="statistiek-icoon">👥</span>
+
+            <span
+                class="statistiek-getal"
+                id="totaalLeden">
+                0
+            </span>
+
+            <span class="statistiek-label">
+                Leden
+            </span>
+        </div>
+
+
+        <div class="statistiek">
+            <span class="statistiek-icoon">✅</span>
+
+            <span
+                class="statistiek-getal"
+                id="totaalAanwezig">
+                0
+            </span>
+
+            <span class="statistiek-label">
+                Aanwezig
+            </span>
+        </div>
+
+
+        <div class="statistiek">
+            <span class="statistiek-icoon">❌</span>
+
+            <span
+                class="statistiek-getal"
+                id="totaalAfwezig">
+                0
+            </span>
+
+            <span class="statistiek-label">
+                Afwezig
+            </span>
+        </div>
+
+    </div>
+
+
+    <div class="zoek">
+
+        <h2>🔎 Leden zoeken</h2>
+
+        <input
+            type="search"
+            id="zoekveld"
+            placeholder="Zoek op naam, hond of ras..."
+            oninput="toonLeden()"
+        >
+
+    </div>
+
+
+    <div
+        id="ledenLijst"
+        class="leden-lijst">
+    </div>
+
+</div>
+
+
+<div id="melding" class="melding"></div>
+
+
+<script>
+
+    let leden = [];
+    let aanwezigheden = {};
+    let huidigeDatum = "";
+    let meldingTimer = null;
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            leden =
+                JSON.parse(
+                    localStorage.getItem("leden")
+                ) || [];
+
+
+            /*
+             * Kijk eerst of de kalender een datum
+             * heeft meegegeven via de URL.
+             *
+             * Bijvoorbeeld:
+             * aanwezigheden.html?datum=2026-09-04
+             */
+
+            const parameters =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+
+            const datumUitKalender =
+                parameters.get("datum");
+
+
+            if (
+                datumUitKalender &&
+                /^\d{4}-\d{2}-\d{2}$/.test(
+                    datumUitKalender
+                )
+            ) {
+
+                huidigeDatum =
+                    datumUitKalender;
+
+            } else {
+
+                huidigeDatum =
+                    vandaagAlsDatum();
+
+            }
+
+
+            document.getElementById(
+                "trainingsDatum"
+            ).value =
+                huidigeDatum;
+
+
+            laadAanwezigheden();
+
+            toonTrainingInfo();
+
+            toonLeden();
+
+        }
+    );
+
+
+    function vandaagAlsDatum() {
+
+        const vandaag = new Date();
+
+        const jaar =
+            vandaag.getFullYear();
+
+        const maand =
+            String(
+                vandaag.getMonth() + 1
+            ).padStart(2, "0");
+
+        const dag =
+            String(
+                vandaag.getDate()
+            ).padStart(2, "0");
+
+        return (
+            jaar +
+            "-" +
+            maand +
+            "-" +
+            dag
+        );
+    }
+
+
+    function datumGewijzigd() {
+
+        huidigeDatum =
+            document.getElementById(
+                "trainingsDatum"
+            ).value;
+
+
+        if (!huidigeDatum) {
+            return;
+        }
+
+
+        laadAanwezigheden();
+
+        toonTrainingInfo();
+
+        toonLeden();
+
+        toonMelding(
+            "Datum gewijzigd."
+        );
+
+
+        /*
+         * De URL wordt aangepast zodat je bij
+         * vernieuwen op dezelfde datum blijft.
+         */
+
+        const nieuweUrl =
+            "aanwezigheden.html?datum=" +
+            encodeURIComponent(
+                huidigeDatum
+            );
+
+
+        window.history.replaceState(
+            {},
+            "",
+            nieuweUrl
+        );
+    }
+
+
+    function laadAanwezigheden() {
+
+        const opgeslagen =
+            localStorage.getItem(
+                "aanwezigheden"
+            );
+
+
+        if (opgeslagen) {
+
+            try {
+
+                aanwezigheden =
+                    JSON.parse(
+                        opgeslagen
+                    );
+
+            } catch (fout) {
+
+                aanwezigheden = {};
+
+            }
+
+        } else {
+
+            aanwezigheden = {};
+
+        }
+    }
+
+
+    function bewaarAanwezigheden() {
+
+        localStorage.setItem(
+            "aanwezigheden",
+            JSON.stringify(
+                aanwezigheden
+            )
+        );
+    }
+
+
+    function datumGegevens() {
+
+        if (
+            !aanwezigheden[huidigeDatum]
+        ) {
+
+            aanwezigheden[huidigeDatum] =
+                {};
+
+        }
+
+
+        return aanwezigheden[
+            huidigeDatum
+        ];
+    }
+
+
+    function statusVanLid(id) {
+
+        const gegevens =
+            datumGegevens();
+
+
+        if (!gegevens[id]) {
+
+            return {
+                status: "onbekend",
+                opmerking: ""
+            };
+
+        }
+
+
+        return {
+
+            status:
+                gegevens[id].status ||
+                "onbekend",
+
+            opmerking:
+                gegevens[id].opmerking ||
+                ""
+
+        };
+    }
+
+
+    function zetStatus(
+        id,
+        status
+    ) {
+
+        const gegevens =
+            datumGegevens();
+
+
+        if (!gegevens[id]) {
+
+            gegevens[id] = {
+
+                status: status,
+
+                opmerking: ""
+
+            };
+
+        } else {
+
+            gegevens[id].status =
+                status;
+
+        }
+
+
+        bewaarAanwezigheden();
+
+        toonLeden();
+
+
+        toonMelding(
+            status === "aanwezig"
+                ? "Aanwezig opgeslagen."
+                : status === "afwezig"
+                ? "Afwezig opgeslagen."
+                : "Status gewist."
+        );
+    }
+
+
+    function bewaarOpmerking(id) {
+
+        const veld =
+            document.getElementById(
+                "opmerking-" + id
+            );
+
+
+        if (!veld) {
+            return;
+        }
+
+
+        const gegevens =
+            datumGegevens();
+
+
+        if (!gegevens[id]) {
+
+            gegevens[id] = {
+
+                status: "onbekend",
+
+                opmerking: ""
+
+            };
+
+        }
+
+
+        gegevens[id].opmerking =
+            veld.value.trim();
+
+
+        bewaarAanwezigheden();
+
+
+        toonMelding(
+            "Opmerking opgeslagen."
+        );
+    }
+
+
+    function iedereenAanwezig() {
+
+        if (leden.length === 0) {
+
+            alert(
+                "Er zijn nog geen leden toegevoegd."
+            );
+
+            return;
+        }
+
+
+        const akkoord =
+            confirm(
+                "Alle leden op 'aanwezig' zetten voor " +
+                formatteerDatum(
+                    huidigeDatum
+                ) +
+                "?"
+            );
+
+
+        if (!akkoord) {
+            return;
+        }
+
+
+        const gegevens =
+            datumGegevens();
+
+
+        leden.forEach(
+            function(lid) {
+
+                if (!gegevens[lid.id]) {
+
+                    gegevens[lid.id] = {
+
+                        status: "aanwezig",
+
+                        opmerking: ""
+
+                    };
+
+                } else {
+
+                    gegevens[lid.id].status =
+                        "aanwezig";
+
+                }
+
+            }
+        );
+
+
+        bewaarAanwezigheden();
+
+        toonLeden();
+
+
+        toonMelding(
+            "Alle leden zijn aanwezig gezet."
+        );
+    }
+
+
+    function iedereenAfwezig() {
+
+        if (leden.length === 0) {
+
+            alert(
+                "Er zijn nog geen leden toegevoegd."
+            );
+
+            return;
+        }
+
+
+        const akkoord =
+            confirm(
+                "Alle leden op 'afwezig' zetten voor " +
+                formatteerDatum(
+                    huidigeDatum
+                ) +
+                "?"
+            );
+
+
+        if (!akkoord) {
+            return;
+        }
+
+
+        const gegevens =
+            datumGegevens();
+
+
+        leden.forEach(
+            function(lid) {
+
+                if (!gegevens[lid.id]) {
+
+                    gegevens[lid.id] = {
+
+                        status: "afwezig",
+
+                        opmerking: ""
+
+                    };
+
+                } else {
+
+                    gegevens[lid.id].status =
+                        "afwezig";
+
+                }
+
+            }
+        );
+
+
+        bewaarAanwezigheden();
+
+        toonLeden();
+
+
+        toonMelding(
+            "Alle leden zijn afwezig gezet."
+        );
+    }
+
+
+    function allesOnbekend() {
+
+        if (leden.length === 0) {
+            return;
+        }
+
+
+        const akkoord =
+            confirm(
+                "De aanwezigheden voor deze datum wissen?"
+            );
+
+
+        if (!akkoord) {
+            return;
+        }
+
+
+        delete aanwezigheden[
+            huidigeDatum
+        ];
+
+
+        bewaarAanwezigheden();
+
+        toonLeden();
+
+
+        toonMelding(
+            "Aanwezigheden gewist."
+        );
+    }
+
+
+    function toonLeden() {
+
+        const lijst =
+            document.getElementById(
+                "ledenLijst"
+            );
+
+
+        const zoekterm =
+            document.getElementById(
+                "zoekveld"
+            )
+            .value
+            .toLowerCase()
+            .trim();
+
+
+        const gevondenLeden =
+            leden.filter(
+                function(lid) {
+
+                    const naamLid =
+                        String(
+                            lid.naamLid || ""
+                        ).toLowerCase();
+
+
+                    const naamHond =
+                        String(
+                            lid.naamHond || ""
+                        ).toLowerCase();
+
+
+                    const ras =
+                        String(
+                            lid.rasHond || ""
+                        ).toLowerCase();
+
+
+                    return (
+                        naamLid.includes(
+                            zoekterm
+                        )
+                        ||
+                        naamHond.includes(
+                            zoekterm
+                        )
+                        ||
+                        ras.includes(
+                            zoekterm
+                        )
+                    );
+
+                }
+            );
+
+
+        lijst.innerHTML = "";
+
+
+        if (gevondenLeden.length === 0) {
+
+            lijst.innerHTML = `
+
+                <div class="geen-leden">
+
+                    <div class="geen-icoon">
+                        👥
+                    </div>
+
+                    <strong>
+                        ${
+                            leden.length === 0
+                            ? "Nog geen leden"
+                            : "Geen leden gevonden"
+                        }
+                    </strong>
+
+                    <p>
+                        ${
+                            leden.length === 0
+                            ? "Voeg eerst leden toe via de ledenpagina."
+                            : "Probeer een andere zoekterm."
+                        }
+                    </p>
+
+                </div>
+
+            `;
+
+
+            updateStatistieken();
+
+            return;
+        }
+
+
+        gevondenLeden.forEach(
+            function(lid) {
+
+                const gegevens =
+                    statusVanLid(
+                        lid.id
+                    );
+
+
+                const status =
+                    gegevens.status;
+
+
+                const naamHond =
+                    lid.naamHond ||
+                    "Geen hond ingevuld";
+
+
+                let statusTekst =
+                    "Nog niet ingevuld";
+
+
+                if (
+                    status === "aanwezig"
+                ) {
+
+                    statusTekst =
+                        "✅ Aanwezig";
+
+                } else if (
+                    status === "afwezig"
+                ) {
+
+                    statusTekst =
+                        "❌ Afwezig";
+
+                }
+
+
+                const kaart =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                kaart.className =
+                    "lid " +
+                    status;
+
+
+                kaart.innerHTML = `
+
+                    <div class="lid-kop">
+
+                        <h3>
+                            👤 ${escapeHtml(
+                                lid.naamLid
+                            )}
+                        </h3>
+
+                        <span
+                            class="
+                                status
+                                ${
+                                    status === "aanwezig"
+                                    ? "status-aanwezig"
+                                    : status === "afwezig"
+                                    ? "status-afwezig"
+                                    : "status-onbekend"
+                                }
+                            ">
+
+                            ${statusTekst}
+
+                        </span>
+
+                    </div>
+
+
+                    <p class="lid-info">
+
+                        🐕 ${escapeHtml(
+                            naamHond
+                        )}
+
+                        ${
+                            lid.rasHond
+                            ? " · 🐾 " +
+                              escapeHtml(
+                                  lid.rasHond
+                              )
+                            : ""
+                        }
+
+                    </p>
+
+
+                    <div class="lid-acties">
+
+                        <button
+                            class="aanwezig-knop"
+                            onclick="zetStatus(
+                                ${lid.id},
+                                'aanwezig'
+                            )">
+
+                            ✅ Aanwezig
+
+                        </button>
+
+
+                        <button
+                            class="afwezig-knop"
+                            onclick="zetStatus(
+                                ${lid.id},
+                                'afwezig'
+                            )">
+
+                            ❌ Afwezig
+
+                        </button>
+
+
+                        <button
+                            class="onbekend-knop"
+                            onclick="zetStatus(
+                                ${lid.id},
+                                'onbekend'
+                            )">
+
+                            ↩ Wissen
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="opmerking">
+
+                        <label
+                            for="opmerking-${lid.id}">
+                            📝 Opmerking
+                        </label>
+
+                        <textarea
+                            id="opmerking-${lid.id}"
+                            placeholder="Bijvoorbeeld: ziek, vakantie, later gekomen..."
+                        >${escapeHtml(
+                            gegevens.opmerking
+                        )}</textarea>
+
+
+                        <button
+                            class="opslaan-opmerking"
+                            onclick="bewaarOpmerking(
+                                ${lid.id}
+                            )">
+
+                            💾 Opmerking bewaren
+
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                lijst.appendChild(
+                    kaart
+                );
+
+            }
+        );
+
+
+        updateStatistieken();
+    }
+
+
+    function updateStatistieken() {
+
+        const gegevens =
+            datumGegevens();
+
+
+        let aanwezig = 0;
+        let afwezig = 0;
+
+
+        leden.forEach(
+            function(lid) {
+
+                if (
+                    gegevens[lid.id] &&
+                    gegevens[lid.id].status ===
+                    "aanwezig"
+                ) {
+
+                    aanwezig++;
+
+                }
+
+
+                if (
+                    gegevens[lid.id] &&
+                    gegevens[lid.id].status ===
+                    "afwezig"
+                ) {
+
+                    afwezig++;
+
+                }
+
+            }
+        );
+
+
+        document.getElementById(
+            "totaalLeden"
+        ).innerText =
+            leden.length;
+
+
+        document.getElementById(
+            "totaalAanwezig"
+        ).innerText =
+            aanwezig;
+
+
+        document.getElementById(
+            "totaalAfwezig"
+        ).innerText =
+            afwezig;
+    }
+
+
+    /*
+     * Zoek in de kalender of deze datum
+     * als training geregistreerd staat.
+     */
+
+    function toonTrainingInfo() {
+
+        const info =
+            document.getElementById(
+                "trainingInfo"
+            );
+
+
+        let kalender = [];
+
+
+        try {
+
+            kalender =
+                JSON.parse(
+                    localStorage.getItem(
+                        "kalender"
+                    )
+                ) || [];
+
+        } catch (fout) {
+
+            kalender = [];
+
+        }
+
+
+        if (!Array.isArray(kalender)) {
+            kalender = [];
+        }
+
+
+        const training =
+            kalender.find(
+                function(item) {
+
+                    return (
+                        item.datum === huidigeDatum &&
+                        item.type === "training"
+                    );
+
+                }
+            );
+
+
+        if (!training) {
+
+            info.style.display =
+                "none";
+
+            info.innerHTML =
+                "";
+
+            return;
+        }
+
+
+        const tijd =
+            training.tijd
+            ? " · 🕒 " +
+              escapeHtml(
+                  training.tijd
+              )
+            : "";
+
+
+        const locatie =
+            training.locatie
+            ? " · 📍 " +
+              escapeHtml(
+                  training.locatie
+              )
+            : "";
+
+
+        info.innerHTML = `
+
+            <strong>
+                🐕 ${escapeHtml(
+                    training.titel
+                )}
+            </strong>
+
+            ${tijd}
+            ${locatie}
+
+        `;
+
+
+        info.style.display =
+            "block";
+    }
+
+
+    function formatteerDatum(datum) {
+
+        if (!datum) {
+            return "";
+        }
+
+
+        const delen =
+            datum.split("-");
+
+
+        if (
+            delen.length !== 3
+        ) {
+
+            return datum;
+
+        }
+
+
+        return (
+            delen[2] +
+            "-" +
+            delen[1] +
+            "-" +
+            delen[0]
+        );
+    }
+
+
+    function escapeHtml(tekst) {
+
+        return String(
+            tekst || ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+    }
+
+
+    function toonMelding(tekst) {
+
+        const melding =
+            document.getElementById(
+                "melding"
+            );
+
+
+        melding.innerText =
+            tekst;
+
+
+        melding.style.display =
+            "block";
+
+
+        clearTimeout(
+            meldingTimer
+        );
+
+
+        meldingTimer =
+            setTimeout(
+                function() {
+
+                    melding.style.display =
+                        "none";
+
+                },
+                2500
+            );
+    }
+
+</script>
+
+</body>
+</html>
+```

@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Verjaardagen - Houtlandse Hondenvrienden</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f4f4f4;
+        color: #222;
+    }
+
+    .pagina {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* =========================
+       KOP
+       ========================= */
+
+    .kop {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .kop h1 {
+        margin: 10px 0 5px;
+        font-size: 30px;
+    }
+
+    .ondertitel {
+        margin: 0;
+        color: #666;
+    }
+
+    .terug-knop {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        background: #777;
+        color: white;
+        text-decoration: none;
+        font-size: 15px;
+    }
+
+    .terug-knop:hover {
+        background: #555;
+    }
+
+    /* =========================
+       JARIGE VANDAAG
+       ========================= */
+
+    .vandaag {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        text-align: center;
+    }
+
+    .vandaag.jarig {
+        background: #fff8df;
+        border: 2px solid #f2c94c;
+    }
+
+    .vandaag-icoon {
+        font-size: 42px;
+    }
+
+    .vandaag h2 {
+        margin: 8px 0;
+    }
+
+    .vandaag p {
+        margin: 5px 0;
+        color: #666;
+    }
+
+    /* =========================
+       STATISTIEKEN
+       ========================= */
+
+    .statistieken {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .statistiek {
+        background: white;
+        padding: 18px 10px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .statistiek-icoon {
+        font-size: 25px;
+    }
+
+    .statistiek-getal {
+        display: block;
+        margin-top: 5px;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .statistiek-label {
+        display: block;
+        margin-top: 3px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    /* =========================
+       ZOEKEN / FILTER
+       ========================= */
+
+    .filters {
+        background: white;
+        padding: 18px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .filters h2 {
+        margin-top: 0;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 11px;
+        margin-top: 6px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        background: white;
+    }
+
+    input:focus,
+    select:focus {
+        outline: none;
+        border-color: #2196f3;
+        box-shadow: 0 0 0 2px rgba(33,150,243,0.12);
+    }
+
+    label {
+        display: block;
+        margin-top: 12px;
+        font-weight: bold;
+    }
+
+    .resultaat {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+
+    /* =========================
+       VOLGENDE VERJAARDAG
+       ========================= */
+
+    .volgende {
+        background: white;
+        padding: 18px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .volgende h2 {
+        margin-top: 0;
+    }
+
+    .volgende-kaart {
+        background: #eef6ff;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .volgende-naam {
+        font-size: 21px;
+        font-weight: bold;
+        margin-bottom: 7px;
+    }
+
+    .volgende-datum {
+        color: #555;
+    }
+
+    .dagen {
+        margin-top: 8px;
+        font-weight: bold;
+        color: #1976d2;
+    }
+
+    /* =========================
+       VERJAARDAGEN
+       ========================= */
+
+    .verjaardagen-lijst {
+        display: grid;
+        gap: 15px;
+    }
+
+    .verjaardag {
+        background: white;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .verjaardag.vandaag-kaart {
+        background: #fff8df;
+        border: 2px solid #f2c94c;
+    }
+
+    .verjaardag-kop {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .verjaardag h3 {
+        margin: 0;
+        font-size: 20px;
+    }
+
+    .datum-badge {
+        background: #f1f1f1;
+        padding: 6px 9px;
+        border-radius: 8px;
+        white-space: nowrap;
+        font-size: 14px;
+    }
+
+    .vandaag-badge {
+        background: #f2c94c;
+        color: #222;
+    }
+
+    .gegevens {
+        border-top: 1px solid #eee;
+        margin-top: 12px;
+        padding-top: 10px;
+    }
+
+    .gegeven {
+        margin: 8px 0;
+        line-height: 1.4;
+    }
+
+    .gegeven strong {
+        display: inline-block;
+        min-width: 145px;
+    }
+
+    .aftellen {
+        margin-top: 12px;
+        padding: 9px;
+        border-radius: 8px;
+        background: #f4f4f4;
+        color: #555;
+        font-weight: bold;
+    }
+
+    .aftellen.vandaag-tekst {
+        background: #fff0a8;
+        color: #8a6500;
+    }
+
+    .geen-verjaardagen {
+        background: white;
+        padding: 30px 20px;
+        border-radius: 12px;
+        text-align: center;
+        color: #666;
+    }
+
+    .geen-icoon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    /* =========================
+       MOBIEL
+       ========================= */
+
+    @media (max-width: 600px) {
+
+        body {
+            padding: 12px;
+        }
+
+        .kop h1 {
+            font-size: 25px;
+        }
+
+        .statistieken {
+            grid-template-columns: 1fr;
+        }
+
+        .statistiek {
+            padding: 12px;
+        }
+
+        .statistiek-getal {
+            font-size: 22px;
+        }
+
+        .verjaardag-kop {
+            flex-direction: column;
+        }
+
+        .datum-badge {
+            align-self: flex-start;
+        }
+
+        .gegeven strong {
+            display: block;
+            min-width: 0;
+            margin-bottom: 2px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="pagina">
+
+```
+<!-- =========================
+     KOP
+     ========================= -->
+
+<div class="kop">
+
+    <h1>🐕 Houtlandse Hondenvrienden</h1>
+
+    <p class="ondertitel">
+        🎂 Verjaardagen van de honden
+    </p>
+
+    <a
+        href="index.html"
+        class="terug-knop">
+        ← Terug naar menu
+    </a>
+
+</div>
+
+
+<!-- =========================
+     VANDAAG
+     ========================= -->
+
+<div
+    id="vandaag"
+    class="vandaag">
+
+    <div class="vandaag-icoon">
+        🎂
+    </div>
+
+    <h2 id="vandaagTitel">
+        Verjaardagen vandaag
+    </h2>
+
+    <p id="vandaagTekst">
+        Even kijken...
+    </p>
+
+</div>
+
+
+<!-- =========================
+     STATISTIEKEN
+     ========================= -->
+
+<div class="statistieken">
+
+    <div class="statistiek">
+
+        <span class="statistiek-icoon">
+            🎂
+        </span>
+
+        <span
+            class="statistiek-getal"
+            id="aantalVerjaardagen">
+            0
+        </span>
+
+        <span class="statistiek-label">
+            Verjaardagen
+        </span>
+
+    </div>
+
+
+    <div class="statistiek">
+
+        <span class="statistiek-icoon">
+            📅
+        </span>
+
+        <span
+            class="statistiek-getal"
+            id="dezeMaand">
+            0
+        </span>
+
+        <span class="statistiek-label">
+            Deze maand
+        </span>
+
+    </div>
+
+
+    <div class="statistiek">
+
+        <span class="statistiek-icoon">
+            🐕
+        </span>
+
+        <span
+            class="statistiek-getal"
+            id="metGeboortedatum">
+            0
+        </span>
+
+        <span class="statistiek-label">
+            Met geboortedatum
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     VOLGENDE VERJAARDAG
+     ========================= -->
+
+<div class="volgende">
+
+    <h2>
+        ⭐ Eerstvolgende verjaardag
+    </h2>
+
+    <div
+        id="volgendeVerjaardag">
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FILTERS
+     ========================= -->
+
+<div class="filters">
+
+    <h2>
+        🔎 Zoeken en filteren
+    </h2>
+
+    <label for="zoekveld">
+        Zoeken
+    </label>
+
+    <input
+        type="search"
+        id="zoekveld"
+        placeholder="Zoek op lid, hond of ras..."
+        oninput="toonVerjaardagen()"
+    >
+
+
+    <label for="filter">
+        Tonen
+    </label>
+
+    <select
+        id="filter"
+        onchange="toonVerjaardagen()">
+
+        <option value="alles">
+            Alle verjaardagen
+        </option>
+
+        <option value="maand">
+            Deze maand
+        </option>
+
+        <option value="30dagen">
+            Komende 30 dagen
+        </option>
+
+    </select>
+
+
+    <p
+        class="resultaat"
+        id="resultaat">
+        0 verjaardagen
+    </p>
+
+</div>
+
+
+<!-- =========================
+     LIJST
+     ========================= -->
+
+<div
+    id="verjaardagenLijst"
+    class="verjaardagen-lijst">
+</div>
+```
+
+</div>
+
+<script>
+
+    // =========================================
+    // GEGEVENS UIT LEDENPAGINA
+    // =========================================
+
+    let leden =
+        JSON.parse(
+            localStorage.getItem("leden")
+        ) || [];
+
+
+    // =========================================
+    // START
+    // =========================================
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            verwerkPagina();
+
+        }
+    );
+
+
+    // =========================================
+    // PAGINA VERWERKEN
+    // =========================================
+
+    function verwerkPagina() {
+
+        // opnieuw ophalen zodat eventuele
+        // wijzigingen direct beschikbaar zijn
+        leden =
+            JSON.parse(
+                localStorage.getItem("leden")
+            ) || [];
+
+
+        updateStatistieken();
+
+        toonVandaag();
+
+        toonVolgendeVerjaardag();
+
+        toonVerjaardagen();
+
+    }
+
+
+    // =========================================
+    // ALLE LEDEN MET GEBOORTEDATUM
+    // =========================================
+
+    function verjaardagsLijst() {
+
+        return leden
+            .filter(
+                function(lid) {
+
+                    return (
+                        lid.geboorteHond &&
+                        geldigeDatum(
+                            lid.geboorteHond
+                        )
+                    );
+
+                }
+            )
+            .map(
+                function(lid) {
+
+                    return {
+                        lid: lid,
+                        datum: nieuweVerjaardagDatum(
+                            lid.geboorteHond
+                        )
+                    };
+
+                }
+            );
+    }
+
+
+    // =========================================
+    // VERJAARDAGSDATUM VAN DIT JAAR
+    // =========================================
+
+    function nieuweVerjaardagDatum(
+        geboortedatum
+    ) {
+
+        const geboorte =
+            new Date(
+                geboortedatum + "T00:00:00"
+            );
+
+
+        const vandaag =
+            new Date();
+
+
+        return new Date(
+            vandaag.getFullYear(),
+            geboorte.getMonth(),
+            geboorte.getDate()
+        );
+    }
+
+
+    // =========================================
+    // VANDAAG JARIG
+    // =========================================
+
+    function isVandaag(
+        datum
+    ) {
+
+        const vandaag =
+            new Date();
+
+
+        return (
+            datum.getDate() ===
+            vandaag.getDate()
+            &&
+            datum.getMonth() ===
+            vandaag.getMonth()
+        );
+    }
+
+
+    // =========================================
+    // DAGEN TOT VERJAARDAG
+    // =========================================
+
+    function dagenTot(
+        datum
+    ) {
+
+        const vandaag =
+            new Date();
+
+
+        const start =
+            new Date(
+                vandaag.getFullYear(),
+                vandaag.getMonth(),
+                vandaag.getDate()
+            );
+
+
+        let verjaardag =
+            new Date(
+                vandaag.getFullYear(),
+                datum.getMonth(),
+                datum.getDate()
+            );
+
+
+        if (
+            verjaardag < start
+        ) {
+
+            verjaardag =
+                new Date(
+                    vandaag.getFullYear() + 1,
+                    datum.getMonth(),
+                    datum.getDate()
+                );
+        }
+
+
+        const verschil =
+            verjaardag.getTime() -
+            start.getTime();
+
+
+        return Math.round(
+            verschil /
+            (
+                1000 *
+                60 *
+                60 *
+                24
+            )
+        );
+    }
+
+
+    // =========================================
+    // LEEFTIJD BEREKENEN
+    // =========================================
+
+    function berekenLeeftijd(
+        geboortedatum
+    ) {
+
+        if (!geboortedatum) {
+            return "";
+        }
+
+
+        const geboorte =
+            new Date(
+                geboortedatum + "T00:00:00"
+            );
+
+
+        const vandaag =
+            new Date();
+
+
+        let leeftijd =
+            vandaag.getFullYear() -
+            geboorte.getFullYear();
+
+
+        const verjaardagDitJaar =
+            new Date(
+                vandaag.getFullYear(),
+                geboorte.getMonth(),
+                geboorte.getDate()
+            );
+
+
+        if (
+            verjaardagDitJaar > vandaag
+        ) {
+
+            leeftijd--;
+
+        }
+
+
+        return leeftijd;
+    }
+
+
+    // =========================================
+    // STATISTIEKEN
+    // =========================================
+
+    function updateStatistieken() {
+
+        const verjaardagen =
+            verjaardagsLijst();
+
+
+        document.getElementById(
+            "aantalVerjaardagen"
+        ).innerText =
+            verjaardagen.length;
+
+
+        const maand =
+            new Date().getMonth();
+
+
+        const dezeMaand =
+            verjaardagen.filter(
+                function(item) {
+
+                    return (
+                        item.datum.getMonth() ===
+                        maand
+                    );
+
+                }
+            ).length;
+
+
+        document.getElementById(
+            "dezeMaand"
+        ).innerText =
+            dezeMaand;
+
+
+        document.getElementById(
+            "metGeboortedatum"
+        ).innerText =
+            verjaardagen.length;
+    }
+
+
+    // =========================================
+    // VANDAAG TONEN
+    // =========================================
+
+    function toonVandaag() {
+
+        const verjaardagen =
+            verjaardagsLijst();
+
+
+        const jarigen =
+            verjaardagen.filter(
+                function(item) {
+
+                    return isVandaag(
+                        item.datum
+                    );
+
+                }
+            );
+
+
+        const vak =
+            document.getElementById(
+                "vandaag"
+            );
+
+
+        const titel =
+            document.getElementById(
+                "vandaagTitel"
+            );
+
+
+        const tekst =
+            document.getElementById(
+                "vandaagTekst"
+            );
+
+
+        if (jarigen.length === 0) {
+
+            vak.classList.remove(
+                "jarig"
+            );
+
+
+            titel.innerText =
+                "Geen verjaardag vandaag";
+
+
+            tekst.innerText =
+                "Vandaag is er geen hond jarig.";
+
+            return;
+        }
+
+
+        vak.classList.add(
+            "jarig"
+        );
+
+
+        titel.innerText =
+            "🎉 Vandaag jarig!";
+
+
+        const namen =
+            jarigen.map(
+                function(item) {
+
+                    return (
+                        item.lid.naamHond ||
+                        "Onbekende hond"
+                    );
+
+                }
+            );
+
+
+        tekst.innerText =
+            namen.join(
+                ", "
+            ) +
+            (
+                namen.length === 1
+                ? " is vandaag jarig!"
+                : " zijn vandaag jarig!"
+            );
+    }
+
+
+    // =========================================
+    // VOLGENDE VERJAARDAG
+    // =========================================
+
+    function toonVolgendeVerjaardag() {
+
+        const container =
+            document.getElementById(
+                "volgendeVerjaardag"
+            );
+
+
+        const verjaardagen =
+            verjaardagsLijst();
+
+
+        if (
+            verjaardagen.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <p>
+                    Er zijn nog geen honden
+                    met een geboortedatum.
+                </p>
+
+            `;
+
+            return;
+        }
+
+
+        verjaardagen.forEach(
+            function(item) {
+
+                item.dagen =
+                    dagenTot(
+                        item.datum
+                    );
+
+            }
+        );
+
+
+        verjaardagen.sort(
+            function(a, b) {
+
+                return a.dagen - b.dagen;
+
+            }
+        );
+
+
+        const volgende =
+            verjaardagen[0];
+
+
+        const naam =
+            volgende.lid.naamHond ||
+            "Onbekende hond";
+
+
+        const lid =
+            volgende.lid.naamLid ||
+            "Onbekend lid";
+
+
+        const dagen =
+            volgende.dagen;
+
+
+        let tekst;
+
+
+        if (dagen === 0) {
+
+            tekst =
+                "🎉 Vandaag jarig!";
+
+        } else if (dagen === 1) {
+
+            tekst =
+                "Morgen jarig!";
+
+        } else {
+
+            tekst =
+                "Nog " +
+                dagen +
+                " dagen";
+
+        }
+
+
+        container.innerHTML = `
+
+            <div class="volgende-kaart">
+
+                <div class="volgende-naam">
+                    🐕 ${escapeHtml(naam)}
+                </div>
+
+                <div class="volgende-datum">
+                    👤 Lid: ${escapeHtml(lid)}
+                </div>
+
+                <div class="volgende-datum">
+                    🎂 ${escapeHtml(
+                        formatteerDatum(
+                            volgende.lid.geboorteHond
+                        )
+                    )}
+                </div>
+
+                <div class="dagen">
+                    ${escapeHtml(tekst)}
+                </div>
+
+            </div>
+
+        `;
+    }
+
+
+    // =========================================
+    // VERJAARDAGEN TONEN
+    // =========================================
+
+    function toonVerjaardagen() {
+
+        const lijst =
+            document.getElementById(
+                "verjaardagenLijst"
+            );
+
+
+        const zoekterm =
+            document.getElementById(
+                "zoekveld"
+            )
+            .value
+            .toLowerCase()
+            .trim();
+
+
+        const filter =
+            document.getElementById(
+                "filter"
+            ).value;
+
+
+        let verjaardagen =
+            verjaardagsLijst();
+
+
+        // Zoeken
+        verjaardagen =
+            verjaardagen.filter(
+                function(item) {
+
+                    const lid =
+                        item.lid;
+
+
+                    const naamLid =
+                        String(
+                            lid.naamLid || ""
+                        ).toLowerCase();
+
+
+                    const naamHond =
+                        String(
+                            lid.naamHond || ""
+                        ).toLowerCase();
+
+
+                    const ras =
+                        String(
+                            lid.rasHond || ""
+                        ).toLowerCase();
+
+
+                    return (
+                        naamLid.includes(
+                            zoekterm
+                        )
+                        ||
+                        naamHond.includes(
+                            zoekterm
+                        )
+                        ||
+                        ras.includes(
+                            zoekterm
+                        )
+                    );
+
+                }
+            );
+
+
+        // Filter deze maand
+        if (
+            filter === "maand"
+        ) {
+
+            const maand =
+                new Date().getMonth();
+
+
+            verjaardagen =
+                verjaardagen.filter(
+                    function(item) {
+
+                        return (
+                            item.datum.getMonth() ===
+                            maand
+                        );
+
+                    }
+                );
+        }
+
+
+        // Filter komende 30 dagen
+        if (
+            filter === "30dagen"
+        ) {
+
+            verjaardagen =
+                verjaardagen.filter(
+                    function(item) {
+
+                        const dagen =
+                            dagenTot(
+                                item.datum
+                            );
+
+
+                        return dagen <= 30;
+
+                    }
+                );
+        }
+
+
+        // Dagen berekenen
+        verjaardagen.forEach(
+            function(item) {
+
+                item.dagen =
+                    dagenTot(
+                        item.datum
+                    );
+
+            }
+        );
+
+
+        // Sorteren op eerstvolgende
+        verjaardagen.sort(
+            function(a, b) {
+
+                return a.dagen - b.dagen;
+
+            }
+        );
+
+
+        // Resultaat
+        document.getElementById(
+            "resultaat"
+        ).innerText =
+            verjaardagen.length +
+            " verjaardag" +
+            (
+                verjaardagen.length === 1
+                ? ""
+                : "en"
+            );
+
+
+        lijst.innerHTML = "";
+
+
+        if (
+            verjaardagen.length === 0
+        ) {
+
+            lijst.innerHTML = `
+
+                <div class="geen-verjaardagen">
+
+                    <div class="geen-icoon">
+                        🎂
+                    </div>
+
+                    <strong>
+                        Geen verjaardagen gevonden
+                    </strong>
+
+                    <p>
+                        Voeg bij een lid een
+                        geboortedatum van de hond toe
+                        of pas je zoekfilter aan.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        // Kaarten maken
+        verjaardagen.forEach(
+            function(item) {
+
+                const lid =
+                    item.lid;
+
+
+                const vandaag =
+                    isVandaag(
+                        item.datum
+                    );
+
+
+                const naamHond =
+                    lid.naamHond ||
+                    "Onbekende hond";
+
+
+                const naamLid =
+                    lid.naamLid ||
+                    "Onbekend lid";
+
+
+                const ras =
+                    lid.rasHond ||
+                    "Niet ingevuld";
+
+
+                const leeftijd =
+                    berekenLeeftijd(
+                        lid.geboorteHond
+                    );
+
+
+                let afteltekst;
+
+
+                if (vandaag) {
+
+                    afteltekst =
+                        "🎉 Vandaag jarig!";
+
+                } else if (
+                    item.dagen === 1
+                ) {
+
+                    afteltekst =
+                        "🎈 Morgen jarig!";
+
+                } else {
+
+                    afteltekst =
+                        "⏰ Nog " +
+                        item.dagen +
+                        " dagen";
+
+                }
+
+
+                const kaart =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                kaart.className =
+                    "verjaardag";
+
+
+                if (vandaag) {
+
+                    kaart.classList.add(
+                        "vandaag-kaart"
+                    );
+                }
+
+
+                kaart.innerHTML = `
+
+                    <div class="verjaardag-kop">
+
+                        <h3>
+                            🐕 ${escapeHtml(
+                                naamHond
+                            )}
+                        </h3>
+
+                        <span
+                            class="
+                                datum-badge
+                                ${vandaag
+                                    ? "vandaag-badge"
+                                    : ""}
+                            ">
+
+                            ${
+                                vandaag
+                                ? "🎉 Vandaag"
+                                : escapeHtml(
+                                    formatteerVerjaardag(
+                                        item.datum
+                                    )
+                                )
+                            }
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="gegevens">
+
+                        <div class="gegeven">
+                            <strong>👤 Lid:</strong>
+                            ${escapeHtml(
+                                naamLid
+                            )}
+                        </div>
+
+                        <div class="gegeven">
+                            <strong>🐾 Ras:</strong>
+                            ${escapeHtml(
+                                ras
+                            )}
+                        </div>
+
+                        <div class="gegeven">
+                            <strong>🎂 Geboren:</strong>
+                            ${escapeHtml(
+                                formatteerDatum(
+                                    lid.geboorteHond
+                                )
+                            )}
+                        </div>
+
+                        <div class="gegeven">
+                            <strong>🎈 Leeftijd:</strong>
+                            ${escapeHtml(
+                                leeftijd +
+                                " jaar"
+                            )}
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="
+                            aftellen
+                            ${vandaag
+                                ? "vandaag-tekst"
+                                : ""}
+                        ">
+
+                        ${escapeHtml(
+                            afteltekst
+                        )}
+
+                    </div>
+
+                `;
+
+
+                lijst.appendChild(
+                    kaart
+                );
+
+            }
+        );
+    }
+
+
+    // =========================================
+    // DATUM FORMAATTEREN
+    // =========================================
+
+    function formatteerDatum(
+        datum
+    ) {
+
+        if (!datum) {
+            return "Niet ingevuld";
+        }
+
+
+        const delen =
+            datum.split("-");
+
+
+        if (
+            delen.length !== 3
+        ) {
+
+            return datum;
+
+        }
+
+
+        return (
+            delen[2] +
+            "-" +
+            delen[1] +
+            "-" +
+            delen[0]
+        );
+    }
+
+
+    // =========================================
+    // VERJAARDAGSDATUM FORMATTEREN
+    // =========================================
+
+    function formatteerVerjaardag(
+        datum
+    ) {
+
+        const maanden = [
+
+            "januari",
+            "februari",
+            "maart",
+            "april",
+            "mei",
+            "juni",
+            "juli",
+            "augustus",
+            "september",
+            "oktober",
+            "november",
+            "december"
+
+        ];
+
+
+        return (
+            datum.getDate() +
+            " " +
+            maanden[
+                datum.getMonth()
+            ]
+        );
+    }
+
+
+    // =========================================
+    // DATUM CONTROLEREN
+    // =========================================
+
+    function geldigeDatum(
+        datum
+    ) {
+
+        if (!datum) {
+            return false;
+        }
+
+
+        const waarde =
+            new Date(
+                datum + "T00:00:00"
+            );
+
+
+        return !isNaN(
+            waarde.getTime()
+        );
+    }
+
+
+    // =========================================
+    // HTML VEILIG MAKEN
+    // =========================================
+
+    function escapeHtml(
+        tekst
+    ) {
+
+        return String(
+            tekst || ""
+        )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+    }
+
+</script>
+
+</body>
+</html>
