@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Houtlandse Hondenvrienden – V31 Beheerder Mededelingen</title>
+<title>Houtlandse Hondenvrienden – Definitieve Eindversie V38</title>
 <style>
 *{box-sizing:border-box}
 :root{--blue:#0865ad;--blue2:#0a4f88;--yellow:#f4d51e;--ink:#173955;--muted:#6d8396;--bg:#eef5fa;--line:#d8e5ee;--green:#19a957;--red:#e43838;--orange:#e8a916}
@@ -1779,6 +1779,7 @@ html,body{
 }
 
 
+</style>
 <style id="hhv-v31-final-mededelingen">
 #adminMessages{
   background:#eef7fc!important;
@@ -1912,6 +1913,670 @@ html,body{
   padding:16px 10px!important;
   text-align:center!important;
   color:#748b9d!important;
+}
+</style>
+
+
+<style id="hhv-v32-home-compact">
+/* V32 – alleen de Home compacter maken, zonder functionaliteit te wijzigen. */
+#home{
+  padding:5px 8px 84px!important;
+  background:#eef7fc!important;
+}
+#home .card{
+  border-radius:15px!important;
+  padding:8px!important;
+  margin-bottom:6px!important;
+  box-shadow:0 2px 8px rgba(18,70,108,.07)!important;
+}
+#home .hero{
+  padding:7px 10px!important;
+}
+#home .hero h2{
+  font-size:18px!important;
+  line-height:1.02!important;
+  margin-bottom:2px!important;
+}
+#home .hero p{
+  font-size:10px!important;
+}
+#home .dog-card{
+  padding:6px!important;
+  grid-template-columns:78px 1fr 18px!important;
+  gap:7px!important;
+}
+#home .dog-card img{
+  width:78px!important;
+  height:67px!important;
+  border-radius:10px!important;
+}
+#home .dog-card h3{
+  font-size:15px!important;
+  margin-bottom:1px!important;
+}
+#home .dog-card p{
+  font-size:9px!important;
+  line-height:1.25!important;
+}
+#home .dog-card .btn{
+  height:27px!important;
+  min-height:27px!important;
+  padding:3px 6px!important;
+  font-size:8.5px!important;
+  border-radius:8px!important;
+}
+#home .training-card{
+  padding:8px!important;
+}
+#home .training-card .section-title{
+  font-size:12px!important;
+  margin-bottom:3px!important;
+}
+#home .training-card .date{
+  font-size:10px!important;
+}
+#home .training-card .meta{
+  font-size:8.5px!important;
+  line-height:1.28!important;
+}
+#home .training-card .stats{
+  margin-top:5px!important;
+  gap:4px!important;
+}
+#home .training-card .stat{
+  min-height:39px!important;
+  padding:5px 2px!important;
+  border-radius:8px!important;
+}
+#home .training-card .stat b{
+  font-size:15px!important;
+}
+#home .training-card .stat span{
+  font-size:7.5px!important;
+}
+#home .training-card .come-title{
+  font-size:9.5px!important;
+  margin:5px 0 3px!important;
+}
+#home .training-card .actions .btn{
+  height:29px!important;
+  min-height:29px!important;
+  font-size:9px!important;
+}
+#home .activity-card{
+  padding:7px!important;
+}
+#home .activity-card .section-title{
+  font-size:12px!important;
+  margin-bottom:3px!important;
+}
+#home .activity-card .activity{
+  gap:7px!important;
+}
+#home .activity-card .activity img{
+  width:68px!important;
+  height:54px!important;
+  border-radius:9px!important;
+}
+#home .activity-card .activity h3{
+  font-size:11px!important;
+}
+#home .activity-card .activity p{
+  font-size:8.5px!important;
+  line-height:1.28!important;
+}
+#home .activity-card .yellow-btn{
+  font-size:8.5px!important;
+  padding:5px 8px!important;
+}
+</style>
+
+
+<style id="hhv-v33-training-detail">
+/* V33 – Training detail: alleen visuele styling, bestaande functies blijven intact. */
+#trainingDetail{
+  background:#eef7fc!important;
+  padding:6px 8px 84px!important;
+}
+#trainingDetail .card{
+  background:#fff!important;
+  border:1px solid #d9e7f1!important;
+  border-radius:17px!important;
+  box-shadow:0 3px 11px rgba(18,70,108,.07)!important;
+  padding:10px!important;
+  margin-bottom:8px!important;
+}
+#trainingDetail .back{
+  color:#07528e!important;
+  font-weight:700!important;
+  font-size:11px!important;
+}
+#trainingDetail .title2{
+  color:#07528e!important;
+  font-size:21px!important;
+  font-weight:800!important;
+  margin:3px 0 7px!important;
+}
+#trainingDetailContent{
+  position:relative!important;
+}
+#trainingDetailContent:after{
+  content:"🐾";
+  position:absolute!important;
+  right:5px!important;
+  top:2px!important;
+  font-size:38px!important;
+  opacity:.08!important;
+  pointer-events:none!important;
+}
+.training-detail-title{
+  color:#07528e!important;
+  font-size:15px!important;
+  font-weight:800!important;
+  margin-bottom:4px!important;
+}
+.training-detail-date{
+  color:#1a4f79!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  margin-bottom:4px!important;
+}
+.training-detail-meta{
+  color:#637d91!important;
+  font-size:9.5px!important;
+  line-height:1.45!important;
+}
+.training-detail-note{
+  color:#526d81!important;
+  font-size:9.5px!important;
+  line-height:1.5!important;
+  background:#f7fbfe!important;
+  border:1px solid #e2edf4!important;
+  border-radius:11px!important;
+  padding:8px!important;
+  margin:8px 0!important;
+}
+.training-detail-actions{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:6px!important;
+  margin-top:8px!important;
+}
+#trainingDetail .btn{
+  height:34px!important;
+  min-height:34px!important;
+  border-radius:9px!important;
+  font-size:10px!important;
+  font-weight:800!important;
+}
+#trainingDetail .yes{
+  background:#18a95a!important;
+  color:#fff!important;
+  border:0!important;
+}
+#trainingDetail .no{
+  background:#e43d45!important;
+  color:#fff!important;
+  border:0!important;
+}
+#trainingDetail #detailAttendanceMsg{
+  color:#2b638a!important;
+  font-size:9px!important;
+  margin-top:7px!important;
+}
+</style>
+
+
+<style id="hhv-v34-activity-detail">
+/* V34 – Activiteit detail: alleen visuele styling, bestaande functies blijven intact. */
+#activity{
+  background:#eef7fc!important;
+  padding:6px 8px 84px!important;
+}
+#activity .card{
+  background:#fff!important;
+  border:1px solid #d9e7f1!important;
+  border-radius:17px!important;
+  box-shadow:0 3px 11px rgba(18,70,108,.07)!important;
+  padding:10px!important;
+  margin-bottom:8px!important;
+}
+#activity .back{
+  color:#07528e!important;
+  font-weight:700!important;
+  font-size:11px!important;
+}
+#activity .title2{
+  color:#07528e!important;
+  font-size:21px!important;
+  font-weight:800!important;
+  margin:3px 0 7px!important;
+}
+#activity img{
+  width:100%!important;
+  max-height:185px!important;
+  object-fit:cover!important;
+  border-radius:13px!important;
+  border:1px solid #dbe8f1!important;
+}
+#activity h3,#activity h4{
+  color:#07528e!important;
+  font-weight:800!important;
+  margin:7px 0 3px!important;
+}
+#activity p,
+#activity .meta,
+#activity small{
+  color:#667f92!important;
+  font-size:9.5px!important;
+  line-height:1.45!important;
+}
+#activity .activity-info,
+#activity .info-box,
+#activity .detail-box{
+  background:#f7fbfe!important;
+  border:1px solid #e2edf4!important;
+  border-radius:11px!important;
+  padding:8px!important;
+  margin-top:7px!important;
+}
+#activity .participant-count,
+#activity .badge,
+#activity .pill{
+  display:inline-flex!important;
+  align-items:center!important;
+  background:#e8f4fc!important;
+  color:#07528e!important;
+  border-radius:999px!important;
+  padding:4px 8px!important;
+  font-size:8px!important;
+  font-weight:800!important;
+}
+#activity button{
+  border-radius:10px!important;
+}
+#activity .yellow-btn{
+  background:#ffd51f!important;
+  color:#173b58!important;
+  border:0!important;
+  font-weight:800!important;
+}
+#activity .primary,
+#activity .btn-primary{
+  background:#0b70bd!important;
+  color:#fff!important;
+  border:0!important;
+}
+#activity .secondary,
+#activity .btn-secondary{
+  background:#fff!important;
+  color:#07528e!important;
+  border:1px solid #cbdde8!important;
+}
+#activity .danger{
+  background:#fff!important;
+  color:#d13c44!important;
+  border:1px solid #efc5c8!important;
+}
+#activity .actions{
+  display:flex!important;
+  gap:6px!important;
+  margin-top:9px!important;
+}
+#activity .actions button{
+  flex:1!important;
+  min-height:35px!important;
+  font-size:9.5px!important;
+}
+#activity .activity-note{
+  font-size:9px!important;
+  color:#557189!important;
+  background:#fffdf0!important;
+  border-left:4px solid #ffd51f!important;
+  border-radius:9px!important;
+  padding:7px!important;
+  margin-top:7px!important;
+}
+
+
+</style>
+<style id="hhv-v35-admin-verjaardagen">
+/* V35 – Beheerder Verjaardagen: alleen visuele styling. */
+#adminBirthdays{
+  background:#eef7fc!important;
+  padding:7px 9px 84px!important;
+}
+#adminBirthdays .card{
+  background:#fff!important;
+  border:1px solid #d9e7f1!important;
+  border-radius:17px!important;
+  box-shadow:0 3px 11px rgba(18,70,108,.07)!important;
+  padding:10px!important;
+  margin-bottom:8px!important;
+}
+#adminBirthdays .back{
+  color:#07528e!important;
+  font-weight:700!important;
+}
+#adminBirthdays .title2{
+  color:#07528e!important;
+  font-size:20px!important;
+  font-weight:800!important;
+  margin-bottom:7px!important;
+}
+#adminBirthdays .bday-card,
+#adminBirthdays .birthday-card,
+#adminBirthdays .birthday-row,
+#adminBirthdays .admin-row{
+  background:#fff!important;
+  border:1px solid #dbe8f1!important;
+  border-radius:15px!important;
+  box-shadow:0 2px 8px rgba(20,73,110,.055)!important;
+  padding:10px!important;
+  margin:7px 0!important;
+}
+#adminBirthdays h3,#adminBirthdays h4{
+  color:#07528e!important;
+  margin-bottom:3px!important;
+}
+#adminBirthdays p,#adminBirthdays small,#adminBirthdays .meta{
+  color:#6a8296!important;
+  line-height:1.4!important;
+}
+#adminBirthdays button{border-radius:10px!important}
+#adminBirthdays .primary{
+  background:#0b70bd!important;
+  color:#fff!important;
+  border:0!important;
+}
+#adminBirthdays .yellow-btn{
+  background:#ffd51f!important;
+  color:#173b58!important;
+  border:0!important;
+  font-weight:800!important;
+}
+#adminBirthdays .birthday-icon{
+  width:40px!important;
+  height:40px!important;
+  border-radius:12px!important;
+  background:#fff4cf!important;
+  display:grid!important;
+  place-items:center!important;
+}
+#adminBirthdays .birthday-date,
+#adminBirthdays .date{
+  color:#07528e!important;
+  font-weight:800!important;
+}
+#adminBirthdays .owner{
+  color:#557189!important;
+  font-size:9px!important;
+}
+#adminBirthdays .today{
+  background:#fff7d8!important;
+  border-color:#f1d56f!important;
+}
+#adminBirthdays .soon{
+  background:#f4faff!important;
+}
+#adminBirthdays .empty{
+  background:#fff!important;
+  border:1px dashed #cbdde8!important;
+  border-radius:14px!important;
+  padding:15px!important;
+  text-align:center!important;
+  color:#748b9d!important;
+}
+</style>
+
+
+<style id="hhv-v36-admin-log">
+/* V36 – Activiteitenlog: alleen visuele styling, bestaande logica blijft intact. */
+#adminLog{
+  background:#eef7fc!important;
+  padding:7px 9px 84px!important;
+}
+#adminLog .card{
+  background:#fff!important;
+  border:1px solid #d9e7f1!important;
+  border-radius:17px!important;
+  box-shadow:0 3px 11px rgba(18,70,108,.07)!important;
+  padding:10px!important;
+  margin-bottom:8px!important;
+}
+#adminLog .back{
+  color:#07528e!important;
+  font-weight:700!important;
+}
+#adminLog .title2{
+  color:#07528e!important;
+  font-size:20px!important;
+  font-weight:800!important;
+  margin-bottom:7px!important;
+}
+#adminLog .log-list,
+#adminLog .activity-log,
+#adminLog #logList{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:7px!important;
+}
+#adminLog .log-row,
+#adminLog .log-item,
+#adminLog .admin-row,
+#adminLog .activity-log-item{
+  background:#fff!important;
+  border:1px solid #dbe8f1!important;
+  border-radius:15px!important;
+  box-shadow:0 2px 8px rgba(20,73,110,.055)!important;
+  padding:9px!important;
+}
+#adminLog .log-icon{
+  width:38px!important;
+  height:38px!important;
+  border-radius:11px!important;
+  background:#edf6fd!important;
+  color:#0b70bd!important;
+  display:grid!important;
+  place-items:center!important;
+}
+#adminLog .log-action,
+#adminLog .action{
+  color:#07528e!important;
+  font-size:11px!important;
+  font-weight:800!important;
+}
+#adminLog .log-user,
+#adminLog .user{
+  color:#365b74!important;
+  font-size:9px!important;
+}
+#adminLog .log-time,
+#adminLog .time,
+#adminLog small{
+  color:#748b9d!important;
+  font-size:8px!important;
+}
+#adminLog .log-detail,
+#adminLog .detail{
+  color:#557189!important;
+  background:#f8fbfe!important;
+  border:1px solid #e2edf4!important;
+  border-radius:10px!important;
+  padding:7px!important;
+  margin-top:5px!important;
+  font-size:9px!important;
+  line-height:1.4!important;
+}
+#adminLog .filter-row{
+  display:flex!important;
+  gap:6px!important;
+  margin-bottom:8px!important;
+}
+#adminLog select,
+#adminLog input{
+  border:1px solid #cbdde8!important;
+  border-radius:10px!important;
+  background:#fff!important;
+}
+#adminLog .yellow-btn{
+  background:#ffd51f!important;
+  color:#173b58!important;
+  border:0!important;
+  border-radius:10px!important;
+  font-weight:800!important;
+}
+#adminLog .empty{
+  background:#fff!important;
+  border:1px dashed #cbdde8!important;
+  border-radius:14px!important;
+  padding:16px 10px!important;
+  text-align:center!important;
+  color:#748b9d!important;
+}
+
+
+<style id="hhv-v37-admin-meer">
+/* V37 – Meer beheer: instellingen, beheerders, backup en hulp.
+   Alleen vormgeving; bestaande functies en IDs blijven intact. */
+#adminMore,#adminBackup,#adminSupport,#adminSettings,#adminAdmins{
+  background:#eef7fc!important;
+  padding:7px 9px 84px!important;
+}
+#adminMore .card,
+#adminBackup .card,
+#adminSupport .card,
+#adminSettings .card,
+#adminAdmins .card{
+  background:#fff!important;
+  border:1px solid #d9e7f1!important;
+  border-radius:17px!important;
+  box-shadow:0 3px 11px rgba(18,70,108,.07)!important;
+  padding:10px!important;
+  margin-bottom:8px!important;
+}
+#adminMore .back,#adminBackup .back,#adminSupport .back,
+#adminSettings .back,#adminAdmins .back{
+  color:#07528e!important;
+  font-weight:700!important;
+}
+#adminMore .title2,#adminBackup .title2,#adminSupport .title2,
+#adminSettings .title2,#adminAdmins .title2{
+  color:#07528e!important;
+  font-size:20px!important;
+  font-weight:800!important;
+}
+#adminMore .listrow,#adminBackup .listrow,#adminSupport .listrow,
+#adminSettings .listrow,#adminAdmins .listrow{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:10px 2px!important;
+  border-bottom:1px solid #dbe8f1!important;
+}
+#adminMore .listrow:last-child,#adminBackup .listrow:last-child,
+#adminSupport .listrow:last-child,#adminSettings .listrow:last-child,
+#adminAdmins .listrow:last-child{
+  border-bottom:0!important;
+}
+#adminMore .liicon,#adminBackup .liicon,#adminSupport .liicon,
+#adminSettings .liicon,#adminAdmins .liicon{
+  width:40px!important;
+  height:40px!important;
+  min-width:40px!important;
+  border-radius:12px!important;
+  background:#edf6fd!important;
+  color:#0b70bd!important;
+  display:grid!important;
+  place-items:center!important;
+}
+#adminMore .arrow,#adminBackup .arrow,#adminSupport .arrow,
+#adminSettings .arrow,#adminAdmins .arrow{
+  margin-left:auto!important;
+  color:#8ca2b4!important;
+  font-size:20px!important;
+}
+#adminMore b,#adminBackup b,#adminSupport b,#adminSettings b,#adminAdmins b{
+  color:#07528e!important;
+  font-size:11px!important;
+}
+#adminMore small,#adminBackup small,#adminSupport small,
+#adminSettings small,#adminAdmins small{
+  color:#6a8296!important;
+  font-size:8px!important;
+}
+#adminBackup input,#adminBackup textarea,#adminBackup select,
+#adminSettings input,#adminSettings textarea,#adminSettings select,
+#adminAdmins input,#adminAdmins textarea,#adminAdmins select{
+  width:100%!important;
+  border:1px solid #cbdde8!important;
+  border-radius:10px!important;
+  background:#fff!important;
+  color:#173e60!important;
+  padding:8px!important;
+}
+#adminBackup button,#adminSupport button,#adminSettings button,#adminAdmins button{
+  border-radius:10px!important;
+}
+#adminBackup .primary,#adminSupport .primary,
+#adminSettings .primary,#adminAdmins .primary{
+  background:#0b70bd!important;
+  color:#fff!important;
+  border:0!important;
+}
+#adminBackup .yellow-btn,#adminSupport .yellow-btn,
+#adminSettings .yellow-btn,#adminAdmins .yellow-btn{
+  background:#ffd51f!important;
+  color:#173b58!important;
+  border:0!important;
+  font-weight:800!important;
+}
+#adminBackup .danger,#adminSupport .danger,#adminSettings .danger,#adminAdmins .danger{
+  background:#fff!important;
+  color:#d13c44!important;
+  border:1px solid #efc5c8!important;
+}
+#adminAdmins .admin-row,
+#adminAdmins .administrator-row,
+#adminAdmins .user-row{
+  background:#fff!important;
+  border:1px solid #dbe8f1!important;
+  border-radius:15px!important;
+  box-shadow:0 2px 8px rgba(20,73,110,.05)!important;
+  padding:10px!important;
+  margin:7px 0!important;
+}
+#adminAdmins .role,
+#adminAdmins .badge{
+  border-radius:999px!important;
+  padding:4px 8px!important;
+  background:#edf6fd!important;
+  color:#07528e!important;
+  font-size:8px!important;
+}
+#adminSupport .support-box,
+#adminBackup .backup-box,
+#adminSettings .settings-box{
+  background:#f8fbfe!important;
+  border:1px solid #e1edf4!important;
+  border-radius:12px!important;
+  padding:9px!important;
+  margin:7px 0!important;
+}
+#adminSupport .support-title,
+#adminBackup .backup-title,
+#adminSettings .settings-title{
+  color:#07528e!important;
+  font-size:12px!important;
+  font-weight:800!important;
+}
+#adminSupport p,#adminBackup p,#adminSettings p,#adminAdmins p{
+  color:#6a8296!important;
+  font-size:9px!important;
+  line-height:1.45!important;
+}
+@media(max-width:430px){
+  #adminMore,#adminBackup,#adminSupport,#adminSettings,#adminAdmins{min-height:100vh}
 }
 </style>
 
