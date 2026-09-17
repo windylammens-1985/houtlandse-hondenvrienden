@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Houtlandse Hondenvrienden – V48 Hondwijziging overal zichtbaar</title>
+<title>Houtlandse Hondenvrienden – V51 Meerdere honden definitief</title>
 <style>
 *{box-sizing:border-box}
 :root{--blue:#0865ad;--blue2:#0a4f88;--yellow:#f4d51e;--ink:#173955;--muted:#6d8396;--bg:#eef5fa;--line:#d8e5ee;--green:#19a957;--red:#e43838;--orange:#e8a916}
@@ -2699,6 +2699,92 @@ html,body{
 }
 </style>
 
+
+<style id="hhv-v49-multiple-own-dogs">
+#dog .member-dog-list-title{
+  color:#07528e;
+  font-size:14px;
+  font-weight:800;
+  margin:4px 0 7px;
+}
+#dog .member-dog-list{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  margin-bottom:8px;
+}
+#dog .member-dog-item{
+  display:grid;
+  grid-template-columns:64px 1fr auto;
+  align-items:center;
+  gap:8px;
+  background:#fff;
+  border:1px solid #dbe8f1;
+  border-radius:14px;
+  padding:7px;
+  box-shadow:0 2px 8px rgba(20,73,110,.05);
+}
+#dog .member-dog-item img{
+  width:64px;
+  height:55px;
+  object-fit:cover;
+  border-radius:9px;
+  border:1px solid #e0ebf2;
+  background:#f3f8fb;
+}
+#dog .member-dog-item .dogname{
+  color:#07528e;
+  font-size:12px;
+  font-weight:800;
+  line-height:1.2;
+}
+#dog .member-dog-item .dogmeta{
+  color:#6b8396;
+  font-size:8.5px;
+  line-height:1.35;
+  margin-top:2px;
+}
+#dog .member-dog-item .dogchip{
+  color:#8aa0b0;
+  font-size:7.5px;
+  margin-top:2px;
+}
+#dog .member-dog-item .dog-edit-btn{
+  border:0;
+  border-radius:9px;
+  background:#ffd51f;
+  color:#173b58;
+  padding:7px 8px;
+  font-size:8px;
+  font-weight:800;
+}
+#dog .member-dog-empty{
+  background:#fff;
+  border:1px dashed #cbdde8;
+  border-radius:13px;
+  padding:13px 9px;
+  text-align:center;
+  color:#71899b;
+  font-size:9px;
+}
+#dog .member-dog-original-hidden{display:none!important}
+</style>
+
+
+
+<style id="hhv-v51-multiple-dogs">
+#dog .member-dog-help{
+  background:#edf6fd;
+  border:1px solid #dbe8f1;
+  border-radius:11px;
+  padding:7px 8px;
+  margin:0 0 8px;
+  color:#5c7890;
+  font-size:8.5px;
+  line-height:1.4;
+}
+</style>
+
 </head>
 <body><div id="hhvQaBanner"></div>
 </style>
@@ -4345,6 +4431,337 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
   document.addEventListener('click',function(e){
     if(e.target.closest('[data-screen="home"]')) setTimeout(sync,30);
   });
+})();
+</script>
+
+
+<script id="hhv-v49-multiple-own-dogs">
+(function(){
+  const DOG_KEY='hhv_dogs';
+
+  function esc(v){
+    return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+  function readDogs(){
+    try{
+      const v=JSON.parse(localStorage.getItem(DOG_KEY)||'null');
+      if(Array.isArray(v) && v.length) return v;
+    }catch(e){}
+    return Array.isArray(window.dogs)?window.dogs:[];
+  }
+  function saveDogs(dogs){
+    try{localStorage.setItem(DOG_KEY,JSON.stringify(dogs));}catch(e){}
+    if(Array.isArray(window.dogs)) window.dogs=dogs.slice();
+  }
+  function currentMember(){
+    let s=null;
+    try{s=JSON.parse(localStorage.getItem('hhv_session')||'null');}catch(e){}
+    if(!s)return null;
+
+    let members=[];
+    try{members=JSON.parse(localStorage.getItem('hhv_members')||'[]')||[];}catch(e){}
+    let m=members.find(x=>String(x.email||'').trim().toLowerCase()===String(s.email||'').trim().toLowerCase());
+    if(m)return m;
+
+    const name=String(s.name||'').trim().toLowerCase();
+    if(name){
+      m=members.find(x=>(((x.voornaam||'')+' '+(x.achternaam||'')).trim().toLowerCase()===name));
+      if(m)return m;
+    }
+
+    if(String(s.email||'').trim().toLowerCase()==='lid@example.be'){
+      return members.find(x=>String(x.id||'')==='m1')||{id:'m1',voornaam:'Jan',achternaam:'Peeters'};
+    }
+    return null;
+  }
+  function age(birth){
+    if(!birth)return '';
+    const d=new Date(birth+'T00:00:00');
+    if(isNaN(d))return '';
+    const now=new Date();
+    let a=now.getFullYear()-d.getFullYear();
+    const md=now.getMonth()-d.getMonth();
+    if(md<0 || (md===0 && now.getDate()<d.getDate()))a--;
+    return a>=0?a+' jaar':'';
+  }
+  function ownDogs(){
+    const m=currentMember();
+    let dogs=readDogs();
+
+    if(!dogs.length){
+      dogs=[{
+        id:'d1',chip:'982000123456789',chipnummer:'982000123456789',
+        naam:'Max',name:'Max',ras:'Border Collie',breed:'Border Collie',
+        geslacht:'Reu',sex:'Reu',geboortedatum:'2022-09-20',birthDate:'2022-09-20',
+        eigenaarId:'m1',ownerId:'m1',foto:'',photo:'',notities:'',notes:'',
+        trainingsnotities:'',trainingNotes:''
+      }];
+      saveDogs(dogs);
+    }
+
+    if(!m)return [];
+
+    let mine=dogs.filter(d =>
+      String(d.ownerId||'')===String(m.id||'') ||
+      String(d.eigenaarId||'')===String(m.id||'') ||
+      String(d.memberId||'')===String(m.id||'')
+    );
+    if(mine.length)return mine;
+
+    const nm=((m.voornaam||'')+' '+(m.achternaam||'')).trim().toLowerCase();
+    const em=String(m.email||'').trim().toLowerCase();
+    mine=dogs.filter(d=>{
+      const owner=String(d.owner||d.ownerName||d.eigenaarNaam||d.ownerEmail||d.eigenaarEmail||'').trim().toLowerCase();
+      return owner && (owner===nm || owner===em);
+    });
+    if(mine.length)return mine;
+
+    const s=currentMember();
+    if(s && String(s.id||'')==='m1'){
+      const max=dogs.find(d=>String(d.id||'')==='d1'||String(d.naam||d.name||'').trim().toLowerCase()==='max');
+      if(max){
+        max.ownerId='m1';
+        max.eigenaarId='m1';
+        saveDogs(dogs);
+        return [max];
+      }
+    }
+    return [];
+  }
+
+  function renderList(){
+    const dog=document.getElementById('dog');
+    if(!dog)return;
+
+    const original=dog.querySelector('.dog-card');
+    if(original)original.classList.add('member-dog-original-hidden');
+
+    let host=document.getElementById('memberDogListV49');
+    if(!host){
+      host=document.createElement('div');
+      host.id='memberDogListV49';
+
+      const title=document.createElement('div');
+      title.className='member-dog-list-title';
+      title.textContent='Mijn honden';
+
+      const list=document.createElement('div');
+      list.className='member-dog-list';
+      host.appendChild(title);
+      host.appendChild(list);
+
+      const firstCard=dog.querySelector('.card');
+      const title2=dog.querySelector('.title2');
+      if(title2 && title2.parentNode){
+        title2.parentNode.insertBefore(host,title2.nextSibling);
+      }else if(firstCard){
+        firstCard.prepend(host);
+      }
+    }
+
+    const list=host.querySelector('.member-dog-list');
+    if(!list)return;
+    const dogs=ownDogs();
+    list.innerHTML='';
+
+    if(!dogs.length){
+      list.innerHTML='<div class="member-dog-empty">Er is geen hond aan jouw lidprofiel gekoppeld.</div>';
+      return;
+    }
+
+    dogs.forEach(function(dogItem){
+      const card=document.createElement('div');
+      card.className='member-dog-item';
+
+      const img=document.createElement('img');
+      img.alt=dogItem.naam||dogItem.name||'Hond';
+      const photo=dogItem.foto||dogItem.photo||'';
+      img.src=photo || 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="100"><rect width="100%" height="100%" fill="#edf6fd"/><text x="50%" y="56%" text-anchor="middle" font-size="38">🐾</text></svg>'
+      );
+
+      const info=document.createElement('div');
+      const name=dogItem.naam||dogItem.name||'Hond';
+      const breed=dogItem.ras||dogItem.breed||'';
+      const sex=dogItem.geslacht||dogItem.sex||'';
+      const a=age(dogItem.geboortedatum||dogItem.birthDate||'');
+      const chip=dogItem.chipnummer||dogItem.chipNumber||dogItem.chip||'';
+
+      info.innerHTML=
+        '<div class="dogname">'+esc(name)+' 🐾</div>'+
+        '<div class="dogmeta">'+esc(breed)+'<br>'+esc([a,sex].filter(Boolean).join(' · '))+'</div>'+
+        (chip?'<div class="dogchip">Chip: '+esc(chip)+'</div>':'');
+
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='dog-edit-btn';
+      btn.textContent='✏️ Aanpassen';
+      btn.addEventListener('click',function(){
+        if(typeof window.hhV49OpenDogEditor==='function'){
+          window.hhV49OpenDogEditor(dogItem, dogs);
+        }
+      });
+
+      card.append(img,info,btn);
+      list.appendChild(card);
+    });
+
+    // Keep the shared info card below the list.
+    const infoCard=Array.from(dog.querySelectorAll(':scope > .card')).find(c=>!c.querySelector('.dog-card') && c!==host.closest('.card'));
+    if(infoCard) infoCard.style.marginTop='4px';
+  }
+
+  // Reuse the existing stable editor by invoking the button handler in a controlled way.
+  // For each dog we temporarily mark the chosen dog, then render our own editor based on
+  // the same fields as V46/V47, keeping the member-only save guard.
+  window.hhV49OpenDogEditor=function(dog, dogs){
+    const wrap=document.getElementById('memberDogEditFormWrap');
+    if(!wrap)return;
+
+    const name=dog.naam||dog.name||'';
+    const chip=dog.chipnummer||dog.chipNumber||dog.chip||'';
+    const breed=dog.ras||dog.breed||'';
+    const sex=dog.geslacht||dog.sex||'';
+    const birth=dog.geboortedatum||dog.birthDate||'';
+    const notes=dog.notities||dog.notes||'';
+    const training=dog.trainingsnotities||dog.trainingNotes||'';
+    const photo=dog.foto||dog.photo||'';
+
+    const chooser=dogs.length>1
+      ? '<label>Mijn honden</label><select id="med49_choice">'+
+          dogs.map((d,i)=>'<option value="'+i+'" '+(d===dog?'selected':'')+'>'+esc(d.naam||d.name||('Hond '+(i+1)))+'</option>').join('')+
+        '</select>'
+      : '';
+
+    wrap.innerHTML=
+      '<div class="member-dog-edit-form">'+
+        '<div class="edit-title">✏️ Gegevens van '+esc(name)+'</div>'+
+        chooser+
+        '<label>Naam</label><input id="med49_name" type="text" value="'+esc(name)+'">'+
+        '<label>Chipnummer</label><input id="med49_chip" type="text" value="'+esc(chip)+'" readonly>'+
+        '<label>Ras</label><input id="med49_breed" type="text" value="'+esc(breed)+'">'+
+        '<label>Geslacht</label><select id="med49_sex"><option value="">Maak een keuze</option>'+
+          '<option value="Reu" '+(sex==='Reu'?'selected':'')+'>Reu</option>'+
+          '<option value="Teef" '+(sex==='Teef'?'selected':'')+'>Teef</option>'+
+        '</select>'+
+        '<label>Geboortedatum</label><input id="med49_birth" type="date" value="'+esc(birth)+'">'+
+        '<label>Notities</label><textarea id="med49_notes">'+esc(notes)+'</textarea>'+
+        '<label>Trainingsnotities</label><textarea id="med49_training">'+esc(training)+'</textarea>'+
+        '<label>Hondenfoto</label><input id="med49_photo" type="file" accept="image/*">'+
+        (photo?'<img class="member-dog-photo-preview" src="'+esc(photo)+'" alt="Hondenfoto">':'')+
+        '<div class="member-dog-edit-actions">'+
+          '<button class="member-dog-save" id="med49_save" type="button">💾 Opslaan</button>'+
+          '<button class="member-dog-cancel" id="med49_cancel" type="button">Annuleren</button>'+
+        '</div>'+
+      '</div>';
+
+    const choice=wrap.querySelector('#med49_choice');
+    if(choice){
+      choice.addEventListener('change',function(){
+        const selected=dogs[Number(this.value)];
+        if(selected) window.hhV49OpenDogEditor(selected,dogs);
+      });
+    }
+
+    wrap.querySelector('#med49_cancel').onclick=()=>{wrap.innerHTML='';};
+
+    wrap.querySelector('#med49_save').onclick=async function(){
+      const m=currentMember();
+      const currentDogs=readDogs();
+      const key=String(dog.id||dog.chip||dog.chipnummer||'');
+      const idx=currentDogs.findIndex(d=>String(d.id||d.chip||d.chipnummer||'')===key);
+
+      if(!m || idx<0){
+        if(window.showToast)window.showToast('Hond niet gevonden.');
+        return;
+      }
+
+      const allowed=(
+        String(dog.ownerId||'')===String(m.id||'') ||
+        String(dog.eigenaarId||'')===String(m.id||'') ||
+        String(dog.memberId||'')===String(m.id||'')
+      );
+      if(!allowed){
+        if(window.showToast)window.showToast('Je kunt alleen je eigen hond aanpassen.');
+        return;
+      }
+
+      const newName=wrap.querySelector('#med49_name').value.trim();
+      if(!newName){
+        if(window.showToast)window.showToast('Vul de naam van je hond in.');
+        return;
+      }
+
+      let newPhoto=photo;
+      const file=wrap.querySelector('#med49_photo').files[0];
+      if(file){
+        try{
+          newPhoto=await new Promise((resolve,reject)=>{
+            const r=new FileReader();
+            r.onload=()=>resolve(r.result);
+            r.onerror=reject;
+            r.readAsDataURL(file);
+          });
+        }catch(e){
+          if(window.showToast)window.showToast('De foto kon niet worden gelezen.');
+          return;
+        }
+      }
+
+      const breedValue=wrap.querySelector('#med49_breed').value.trim();
+      const sexValue=wrap.querySelector('#med49_sex').value;
+      const birthValue=wrap.querySelector('#med49_birth').value;
+      const notesValue=wrap.querySelector('#med49_notes').value.trim();
+      const trainingValue=wrap.querySelector('#med49_training').value.trim();
+
+      currentDogs[idx]=Object.assign({},currentDogs[idx],{
+        naam:newName,name:newName,
+        ras:breedValue,breed:breedValue,
+        geslacht:sexValue,sex:sexValue,
+        geboortedatum:birthValue,birthDate:birthValue,
+        notities:notesValue,notes:notesValue,
+        trainingsnotities:trainingValue,trainingNotes:trainingValue,
+        foto:newPhoto,photo:newPhoto
+      });
+
+      saveDogs(currentDogs);
+      wrap.innerHTML='';
+      if(window.showToast)window.showToast('✅ De gegevens van je hond zijn opgeslagen.');
+      window.dispatchEvent(new CustomEvent('hhv-data-updated'));
+      setTimeout(renderList,20);
+    };
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(renderList,40);
+  });
+  window.addEventListener('hhv-data-updated',function(){
+    setTimeout(renderList,20);
+  });
+  document.addEventListener('click',function(e){
+    if(e.target.closest('[data-screen="dog"]')){
+      setTimeout(renderList,40);
+    }
+  });
+})();
+</script>
+
+
+
+<script id="hhv-v51-multiple-dogs-note">
+(function(){
+  function addNote(){
+    const host=document.getElementById('memberDogListV49');
+    if(!host || document.getElementById('memberDogHelpV51')) return;
+    const note=document.createElement('div');
+    note.id='memberDogHelpV51';
+    note.className='member-dog-help';
+    note.textContent='🐾 Heb je meerdere honden? Ze staan hier allemaal. Je kunt elke eigen hond afzonderlijk aanpassen.';
+    host.insertBefore(note, host.querySelector('.member-dog-list'));
+  }
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(addNote,50);});
+  window.addEventListener('hhv-data-updated',function(){setTimeout(addNote,30);});
 })();
 </script>
 
