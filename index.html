@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Houtlandse Hondenvrienden – V51 Meerdere honden definitief</title>
+<title>Houtlandse Hondenvrienden – V52 Hond toevoegen</title>
 <style>
 *{box-sizing:border-box}
 :root{--blue:#0865ad;--blue2:#0a4f88;--yellow:#f4d51e;--ink:#173955;--muted:#6d8396;--bg:#eef5fa;--line:#d8e5ee;--green:#19a957;--red:#e43838;--orange:#e8a916}
@@ -2773,6 +2773,22 @@ html,body{
 
 
 <style id="hhv-v51-multiple-dogs">
+#dog .member-dog-add-btn{
+  display:block;
+  width:100%;
+  margin:0 0 8px;
+  border:0;
+  border-radius:10px;
+  background:#ffd51f;
+  color:#173b58;
+  padding:8px 10px;
+  font-size:9px;
+  font-weight:800;
+  box-shadow:0 2px 7px rgba(20,73,110,.05);
+}
+#dog .member-dog-add-btn:active{transform:translateY(1px);}
+#dog .member-dog-add-form{margin:0 0 8px!important;}
+
 #dog .member-dog-help{
   background:#edf6fd;
   border:1px solid #dbe8f1;
@@ -4545,9 +4561,19 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
       title.className='member-dog-list-title';
       title.textContent='Mijn honden';
 
+      const addBtn=document.createElement('button');
+      addBtn.type='button';
+      addBtn.id='memberDogAddBtnV52';
+      addBtn.className='member-dog-add-btn';
+      addBtn.textContent='➕ Hond toevoegen';
+      addBtn.addEventListener('click',function(){
+        if(typeof window.hhV52OpenAddDog==='function') window.hhV52OpenAddDog();
+      });
+
       const list=document.createElement('div');
       list.className='member-dog-list';
       host.appendChild(title);
+      host.appendChild(addBtn);
       host.appendChild(list);
 
       const firstCard=dog.querySelector('.card');
@@ -4614,6 +4640,111 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
   // Reuse the existing stable editor by invoking the button handler in a controlled way.
   // For each dog we temporarily mark the chosen dog, then render our own editor based on
   // the same fields as V46/V47, keeping the member-only save guard.
+  window.hhV52OpenAddDog=function(){
+    const host=document.getElementById('memberDogListV49');
+    if(!host)return;
+
+    let wrap=document.getElementById('memberDogAddFormWrapV52');
+    if(wrap){
+      wrap.scrollIntoView({behavior:'smooth',block:'start'});
+      return;
+    }
+
+    wrap=document.createElement('div');
+    wrap.id='memberDogAddFormWrapV52';
+    wrap.innerHTML=
+      '<div class="member-dog-edit-form member-dog-add-form">'+
+        '<div class="edit-title">➕ Nieuwe hond toevoegen</div>'+        '<label>Naam</label><input id="med52_name" type="text" value="">'+        '<label>Chipnummer</label><input id="med52_chip" type="text" value="" inputmode="numeric">'+        '<label>Ras</label><input id="med52_breed" type="text" value="">'+        '<label>Geslacht</label><select id="med52_sex"><option value="">Maak een keuze</option><option value="Reu">Reu</option><option value="Teef">Teef</option></select>'+        '<label>Geboortedatum</label><input id="med52_birth" type="date" value="">'+        '<label>Notities</label><textarea id="med52_notes"></textarea>'+        '<label>Trainingsnotities</label><textarea id="med52_training"></textarea>'+        '<label>Hondenfoto</label><input id="med52_photo" type="file" accept="image/*">'+        '<div class="member-dog-edit-actions">'+          '<button class="member-dog-save" id="med52_save" type="button">💾 Hond toevoegen</button>'+          '<button class="member-dog-cancel" id="med52_cancel" type="button">Annuleren</button>'+        '</div>'+      '</div>';
+
+    const addBtn=host.querySelector('#memberDogAddBtnV52');
+    const list=host.querySelector('.member-dog-list');
+    if(addBtn && addBtn.parentNode===host){
+      addBtn.insertAdjacentElement('afterend',wrap);
+    }else if(list){
+      host.insertBefore(wrap,list);
+    }else{
+      host.appendChild(wrap);
+    }
+
+    wrap.querySelector('#med52_cancel').onclick=()=>{wrap.remove();};
+    wrap.querySelector('#med52_save').onclick=async function(){
+      const m=currentMember();
+      if(!m){
+        if(window.showToast)window.showToast('Je lidprofiel kon niet worden gevonden.');
+        return;
+      }
+
+      const name=wrap.querySelector('#med52_name').value.trim();
+      const chip=wrap.querySelector('#med52_chip').value.trim();
+      const breed=wrap.querySelector('#med52_breed').value.trim();
+      const sex=wrap.querySelector('#med52_sex').value;
+      const birth=wrap.querySelector('#med52_birth').value;
+      const notes=wrap.querySelector('#med52_notes').value.trim();
+      const training=wrap.querySelector('#med52_training').value.trim();
+
+      if(!name){
+        if(window.showToast)window.showToast('Vul de naam van je hond in.');
+        return;
+      }
+      if(!chip){
+        if(window.showToast)window.showToast('Vul het chipnummer van je hond in.');
+        return;
+      }
+
+      const currentDogs=readDogs();
+      const chipTaken=currentDogs.some(d=>{
+        const existing=String(d.chipnummer||d.chipNumber||d.chip||'').trim().toLowerCase();
+        return existing===chip.toLowerCase();
+      });
+      if(chipTaken){
+        if(window.showToast)window.showToast('Dit chipnummer bestaat al. Elk chipnummer moet uniek zijn.');
+        return;
+      }
+
+      let photo='';
+      const file=wrap.querySelector('#med52_photo').files[0];
+      if(file){
+        try{
+          photo=await new Promise((resolve,reject)=>{
+            const r=new FileReader();
+            r.onload=()=>resolve(r.result);
+            r.onerror=reject;
+            r.readAsDataURL(file);
+          });
+        }catch(e){
+          if(window.showToast)window.showToast('De foto kon niet worden gelezen.');
+          return;
+        }
+      }
+
+      const newDog={
+        id:'d'+Date.now(),
+        chip:chip,chipnummer:chip,chipNumber:chip,
+        naam:name,name:name,
+        ras:breed,breed:breed,
+        geslacht:sex,sex:sex,
+        geboortedatum:birth,birthDate:birth,
+        eigenaarId:String(m.id||''),ownerId:String(m.id||''),memberId:String(m.id||''),
+        eigenaarNaam:(((m.voornaam||'')+' '+(m.achternaam||'')).trim()),
+        eigenaarEmail:String(m.email||''),
+        foto:photo,photo:photo,
+        notities:notes,notes:notes,
+        trainingsnotities:training,trainingNotes:training
+      };
+
+      currentDogs.push(newDog);
+      saveDogs(currentDogs);
+      wrap.remove();
+      if(window.showToast)window.showToast('✅ '+name+' is toegevoegd aan je honden.');
+      window.dispatchEvent(new CustomEvent('hhv-data-updated'));
+      setTimeout(renderList,20);
+    };
+
+    const nameInput=wrap.querySelector('#med52_name');
+    if(nameInput) nameInput.focus();
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
   window.hhV49OpenDogEditor=function(dog, dogs){
     const wrap=document.getElementById('memberDogEditFormWrap');
     if(!wrap)return;
@@ -4762,6 +4893,17 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
   }
   document.addEventListener('DOMContentLoaded',function(){setTimeout(addNote,50);});
   window.addEventListener('hhv-data-updated',function(){setTimeout(addNote,30);});
+})();
+</script>
+
+<script id="hhv-v52-hond-toevoegen-note">
+(function(){
+  function mark(){
+    const btn=document.getElementById('memberDogAddBtnV52');
+    if(btn) btn.setAttribute('aria-label','Nieuwe eigen hond toevoegen');
+  }
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(mark,80);});
+  window.addEventListener('hhv-data-updated',function(){setTimeout(mark,40);});
 })();
 </script>
 
