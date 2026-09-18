@@ -5132,5 +5132,137 @@ if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.
   window.addEventListener('hhv-data-updated',function(){setTimeout(render,60);});
 })();
 </script>
+
+<script id="hhv-v56-member-profile-editor">
+(function(){
+  'use strict';
+  const MEMBER_KEY='hhv_members', SESSION_KEY='hhv_session', LOG_KEY='hhv_activity_log';
+  function read(k,f){try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?f:v;}catch(e){return f;}}
+  function write(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}}
+  function esc(v){return String(v??'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function members(){return read(MEMBER_KEY,[]);}
+  function session(){return read(SESSION_KEY,null);}
+  function current(){
+    const ms=members(), st=session();
+    if(st){
+      const byEmail=ms.find(m=>String(m.email||'').trim().toLowerCase()===String(st.email||'').trim().toLowerCase());
+      if(byEmail)return byEmail;
+      if(st.memberId){const byId=ms.find(m=>m.id===st.memberId); if(byId)return byId;}
+    }
+    return ms.find(m=>m.id==='m1')||ms[0]||null;
+  }
+  function logChange(before,after){
+    const changed=[];
+    ['voornaam','achternaam','adres','postcode','gemeente','telefoon','email','notities'].forEach(k=>{
+      if(String(before?.[k]??'')!==String(after?.[k]??'')) changed.push(k);
+    });
+    if(!changed.length)return;
+    const logs=read(LOG_KEY,[]);
+    logs.push({
+      id:'log_'+Date.now(),
+      timestamp:new Date().toISOString(),
+      location:'Mijn profiel',
+      description:'Eigen profielgegevens gewijzigd: '+changed.join(', '),
+      actor:((after.voornaam||'')+' '+(after.achternaam||'')).trim()||'Lid'
+    });
+    write(LOG_KEY,logs);
+  }
+  function refreshVisible(){
+    try{ window.dispatchEvent(new CustomEvent('hhv-data-updated')); }catch(e){}
+    if(typeof window.renderHome==='function'){try{window.renderHome();}catch(e){}}
+  }
+  function renderProfile(){
+    const profile=document.getElementById('profile');
+    const view=document.getElementById('memberProfileView');
+    if(!profile||!view)return;
+    const m=current();
+    if(!m){
+      view.innerHTML='<p class="muted">Geen profielgegevens gevonden.</p>';
+      return;
+    }
+    const name=((m.voornaam||'')+' '+(m.achternaam||'')).trim()||'Lid';
+    view.innerHTML=
+      '<div class="listrow"><div class="liicon">👤</div><div><b>'+esc(name)+'</b><small>Lid</small></div></div>'+
+      '<div class="listrow"><div class="liicon">✉</div><div><b>E-mail</b><small>'+esc(m.email||'—')+'</small></div></div>'+
+      '<div class="listrow"><div class="liicon">☎</div><div><b>Telefoon</b><small>'+esc(m.telefoon||'—')+'</small></div></div>'+
+      '<div class="listrow"><div class="liicon">📍</div><div><b>Adres</b><small>'+esc([m.adres,m.postcode,m.gemeente].filter(Boolean).join(' · ')||'—')+'</small></div></div>'+
+      '<button id="hhvV56EditProfile" class="yellow-btn" type="button" style="width:100%;margin-top:12px">✎ Gegevens bewerken</button>';
+    const old=document.getElementById('memberProfileFormWrap');
+    if(old)old.innerHTML='';
+    document.getElementById('hhvV56EditProfile')?.addEventListener('click',openEdit);
+  }
+  function openEdit(){
+    const wrap=document.getElementById('memberProfileFormWrap'), m=current();
+    if(!wrap||!m)return;
+    wrap.innerHTML=
+      '<div class="member-form" style="margin-top:12px">'+
+      '<div class="section-title">✏️ Mijn gegevens aanpassen</div>'+
+      '<div class="form-grid">'+
+      '<div><label>Voornaam</label><input id="v56_v" type="text" value="'+esc(m.voornaam||'')+'" autocomplete="given-name"></div>'+
+      '<div><label>Achternaam</label><input id="v56_a" type="text" value="'+esc(m.achternaam||'')+'" autocomplete="family-name"></div>'+
+      '<div class="full"><label>Adres</label><input id="v56_ad" type="text" value="'+esc(m.adres||'')+'" autocomplete="street-address"></div>'+
+      '<div><label>Postcode</label><input id="v56_pc" type="text" value="'+esc(m.postcode||'')+'" autocomplete="postal-code"></div>'+ 
+      '<div><label>Gemeente</label><input id="v56_g" type="text" value="'+esc(m.gemeente||'')+'" autocomplete="address-level2"></div>'+ 
+      '<div><label>Telefoon</label><input id="v56_t" type="tel" value="'+esc(m.telefoon||'')+'" autocomplete="tel"></div>'+ 
+      '<div><label>E-mail</label><input id="v56_e" type="email" value="'+esc(m.email||'')+'" autocomplete="email"></div>'+ 
+      '<div class="full"><label>Notities</label><textarea id="v56_n" rows="3">'+esc(m.notities||'')+'</textarea></div>'+ 
+      '</div>'+ 
+      '<div class="member-form-actions" style="margin-top:10px">'+
+      '<button id="v56_save" class="yellow-btn" type="button">💾 Opslaan</button>'+ 
+      '<button id="v56_cancel" class="back-btn" type="button">Annuleren</button></div>'+ 
+      '<div id="v56_msg" class="saved-note" style="margin-top:8px"></div></div>';
+    document.getElementById('v56_cancel').onclick=function(){wrap.innerHTML='';};
+    document.getElementById('v56_save').onclick=function(){
+      const ms=members(), cur=current();
+      if(!cur)return;
+      const idx=ms.findIndex(x=>x.id===cur.id);
+      if(idx<0)return;
+      const v=document.getElementById('v56_v').value.trim();
+      const a=document.getElementById('v56_a').value.trim();
+      const email=document.getElementById('v56_e').value.trim();
+      if(!v||!a){window.showToast?.('Vul voornaam en achternaam in.');return;}
+      if(!email){window.showToast?.('Vul een e-mailadres in.');return;}
+      const conflict=ms.find(x=>x.id!==cur.id && String(x.email||'').trim().toLowerCase()===email.toLowerCase());
+      if(conflict){window.showToast?.('Dit e-mailadres is al in gebruik.');return;}
+      const before={...ms[idx]};
+      const after={...ms[idx],
+        voornaam:v,
+        achternaam:a,
+        adres:document.getElementById('v56_ad').value.trim(),
+        postcode:document.getElementById('v56_pc').value.trim(),
+        gemeente:document.getElementById('v56_g').value.trim(),
+        telefoon:document.getElementById('v56_t').value.trim(),
+        email:email,
+        notities:document.getElementById('v56_n').value.trim()
+      };
+      ms[idx]=after;
+      if(!write(MEMBER_KEY,ms)){
+        window.showToast?.('❌ Opslaan mislukt.');
+        return;
+      }
+      const st=session();
+      if(st){st.email=after.email; if(after.id)st.memberId=after.id; write(SESSION_KEY,st);}
+      logChange(before,after);
+      wrap.innerHTML='';
+      renderProfile();
+      refreshVisible();
+      window.showToast?.('✅ Gegevens opgeslagen.');
+    };
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function install(){
+    renderProfile();
+  }
+  document.addEventListener('DOMContentLoaded',install);
+  const oldShow=window.show;
+  window.show=function(id){
+    if(typeof oldShow==='function')oldShow(id);
+    if(id==='profile')setTimeout(renderProfile,20);
+  };
+  window.addEventListener('hhv-data-updated',function(){
+    if(document.getElementById('profile')?.classList.contains('active'))setTimeout(renderProfile,20);
+  });
+})();
+</script>
 </body>
 </html>
